@@ -1,0 +1,33 @@
+{% extends 'pay/base.html' %}
+{% load static %}
+
+{% block title %}Manage your credit/debit cards{% endblock %}
+
+{% block content %}
+<h1>Your credit/debit cards</h1>
+{% if paycards %}
+<table class="paycards table">
+	<thead>
+		<tr>
+		<td colspan="3"></td>
+		<td>Name on card</td>
+		<td>Expiry date</td>
+		</tr>
+	<tbody>
+		{% for card in paycards %}
+		<tr>
+		<td class="payment-card">
+			<i><img src="{% static card.logo_img %}" alt="{{ card.card_type }}"></i></td>
+		<td>{{ card.card_type }}</td>
+		<td><b>{{ card.cardnumber.obscured }}</b></td>
+		<td>{{ card.holder }}</td>
+		<td>{{ card.expire_month }}/{{ card.expire_year }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% else %}
+	<p>No credit/debit cards found.
+{% endif %}
+	<p><a class="btn btn-default" href="{% url 'add_card' %}">Add card</a>
+{% endblock %}

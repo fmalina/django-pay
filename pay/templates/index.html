@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Pay{% endblock %}
+{% block header %}{% endblock %}
+{% block content %}
+	<p>Hi {{ user.first_name }},<br>
+	Now you are here we want your money.
+    {% if user.subscription.is_active %}
+        <p>You have {{ user.subscription.expires|timeuntil }}
+			left of your subscription.
+            {% if user.subscription.topup_time %}
+				It’s a good time to topup.
+			{% endif %}</p>
+    {% endif %}
+
+	<p><a class="btn btn-default" href="{% url 'subscribe' %}">Subscribe</a>
+	
+	<ul class="list-unstyled">
+    <li><a href="{% url 'receipts' %}">your receipts</a>
+    <li><a href="{% url 'paycards' %}">manage cards</a>
+	</ul>
+{% endblock %}

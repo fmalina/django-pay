@@ -1,0 +1,23 @@
+{% extends 'pay/base.html' %}
+
+{% block content %}
+<h1>Your receipts</h1>
+{% if payments %}
+	<ul id="cards">
+		{% regroup payments by time_stamp|date:"Y" as year_list %}
+		{% for year in year_list %}
+		<li><b>{{ year.grouper }}</b>
+		    <ul>
+		    {% for p in year.list %}
+		    <li><a href="{{ p.get_absolute_url }}">
+				<i>{{ p.time_stamp|date:"M j" }}</i>
+				{{ p.plan }}</a></li>
+		    {% endfor %}
+		    </ul>
+		</li>
+		{% endfor %}
+	</ul>
+{% else %}
+	<p>No receipts yet.
+{% endif %}
+{% endblock %}

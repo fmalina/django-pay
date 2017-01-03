@@ -1,0 +1,30 @@
+{% extends 'pay/base.html' %}
+
+{% block content %}
+<h1>Add card details</h1>
+<form method="post" action="#">
+	<ul class="cc-fields list-unstyled">
+	<li>{{ form.cardnumber.label_tag }}
+	    {{ form.cardnumber }}
+	    {{ form.cardnumber.errors }}</li>
+	<li>{{ form.expire_month.label_tag }}
+	    {{ form.expire_month }}&nbsp;{{ form.expire_year }}
+	    {{ form.expire_month.errors }}
+		{{ form.expire_year.errors }}</li>
+	<li>{{ form.holder.label_tag }}
+		{{ form.holder }}
+		{{ form.holder.errors }}</li>
+	<li>{{ form.address.label_tag }}
+		{{ form.address }}
+		{{ form.address.errors }}</li>
+	<li>{{ form.postcode.label_tag }}
+		{{ form.postcode }}
+		{{ form.postcode.errors }}</li>
+	<li>{{ form.cvv.label_tag }}
+		{{ form.cvv }}
+		{{ form.cvv.errors }}</li>
+	</ul>
+    {% csrf_token %}
+    <p><button class="btn btn-default">Add card details</button>
+</form>
+{% endblock %}
