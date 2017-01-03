@@ -1,0 +1,6 @@
+MAILFROM="cron@example.com"
+MAILTO="cron@example.com"
+RUN='some_path/pay/manage.py'
+
+# process recurring payments daily at 8pm
+0 20 * * * $RUN process_recurring

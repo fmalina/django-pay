@@ -1,0 +1,37 @@
+.payment-card i{border:1px dotted #ddd;border-radius:5px;padding:5px;
+	box-shadow:1px 1px 1px 0 rgba(0,0,0,.5);
+	float:left;
+	height:45px;width:70px;margin-right:5px;}
+.payment-card i.active{
+	border:1px solid #337ab7}
+.payment-card i img{max-width:60px;max-height:35px;
+    vertical-align: middle;}
+.payment-card i:before{
+    content: "";
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+.payment-paypal{
+	clear:both;
+	padding-top:10px;
+	margin-left:120px;
+}
+.payment-paypal img{
+	height:14px;
+}
+.cc-fields{clear:both;padding-top:1em}
+.cc-fields input,
+.cc-fields textarea{border-radius:4px;border:1px solid #ddd}
+.cc-fields label{display:inline-block;width:120px;text-align:right;
+	font-weight:normal}
+.cc-fields label,
+.errorlist{font-size:.9em}
+.cc-fields__cvv input{width:3em}
+.cc-fields__cvv .badge{cursor:pointer}
+.cc-fields__cvv img{display:none;cursor:pointer;margin:10px 36px}
+label[for=id_address]{float:left;}
+textarea#id_address{margin-left:4px;}
+.errorlist{list-style:none;color:#c00;padding-left:125px;}
+.paycards.table tbody td{vertical-align:middle}
+.paycards.table tbody td.card{width:80px}

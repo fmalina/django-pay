@@ -1,0 +1,13 @@
+{% extends 'pay/base.html' %}
+{% block content %}
+<p>Enter the payment you want to test.</p>
+<form method="POST" action=".">
+    <div>
+        <ul>
+        {{ form.as_ul }}
+        </ul>
+        {% csrf_token %}
+        <p><button class="btn">Test</button></p>
+    </div>
+</form>
+{% endblock %}

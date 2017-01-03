@@ -1,0 +1,103 @@
+{% extends 'pay/base.html' %}
+{% load static %}
+{% block extrahead %}
+<script>
+function leaving_callback(){
+	alert('Are you sure?');
+}
+
+{% if last_card %}
+$(function(){
+	{% if cc.last_card.value %}last{% else %}new{% endif %}Card();
+});
+{% endif %}
+</script>
+{% endblock %}
+{% block nav %}{% endblock %}
+{% block top %}{% endblock %}
+{% block cid %}{% endblock %}
+{% block content %}
+
+<form method="post" action="{% url 'payment' %}#payment" id="cc"
+	onsubmit="window.onbeforeunload = null">
+    <p>Your plan: <b>{{ user.subscription.get_plan_display }}</b>
+		<a href="{% url 'subscribe' %}">- update</a>
+    <div id="payment">
+        <div id="payment-wrap">
+            <div class="payment-card">
+				<i><img src="{% static 'pay/img/logo_visa.svg' %}" alt="Visa" ></i>
+				<i><img src="{% static 'pay/img/logo_mc.svg' %}" alt="MasterCard"></i>
+				<i><img src="{% static 'pay/img/logo_amex.svg' %}" alt="Amex"></i>
+			</div>
+			<div class="payment-paypal">
+				or
+				<a href="{% url 'paypal' %}">pay by 
+					<img src="{% static 'pay/img/logo_paypal.svg' %}" alt="PayPal">
+				</a>
+			</div>
+            
+            <ul class="cc-fields list-unstyled">
+                {% if cc.non_field_errors %}
+                    <li>{{ cc.non_field_errors }}</li>
+                {% endif %}
+                
+                {% if last_card %}
+                    {{ cc.last_card }}
+                    <li class="last-card">
+                        <p style="font-size:16px">
+						Card number:
+                        {{ last_card.cardnumber.obscured }}<br>
+                        {{ last_card.card_type }}
+						exp. {{ last_card.expire_month }}/{{ last_card.expire_year }}
+                        <a href="#now" onclick="newCard()">or use a different card</a>
+                        <p>Enter your card’s security code to authorise the payment.<br>
+                        </li>
+                    <li class="new-card">
+                        <a href="#now" onclick="lastCard()">+ show last used card</a>
+                        </li>
+                {% endif %}
+            
+            
+                <li class="new-card">{{ cc.cardnumber.label_tag }}
+                    {{ cc.cardnumber }}
+                    <b class="secure">
+						<i class="glyphicon glyphicon-lock"></i>
+						secure</b>
+                    {{ cc.cardnumber.errors }}
+                    </li>
+                <li class="new-card">{{ cc.expire_month.label_tag }}
+                    {{ cc.expire_month }} / {{ cc.expire_year }}
+                    {% if cc.expire_month.errors or cc.expire_year.errors %}{% endif %}
+                    {{ cc.expire_month.errors }}
+                    {{ cc.expire_year.errors }}
+                    </li>
+                <li class="new-card">{{ cc.holder.label_tag }}
+                    {{ cc.holder }}
+                    {{ cc.holder.errors }}
+                    </li>
+                <li class="cc-fields__cvv">
+                    {{ cc.cvv.label_tag }}
+                    {{ cc.cvv }}
+                    <b class="count badge" title="the last 3 digits on the back of your card">?</b>
+					<br>
+                    <img src="{% static 'pay/img/cvv.png' %}"
+                        width="246" height="74" alt="the last 3 digits on the back of your card">
+                    {{ cc.cvv.errors }}&nbsp;
+                    </li>
+                <li class="new-card" id="cc-address">
+                    {{ cc.address.label_tag }}
+                    {{ cc.address }}
+                    {{ cc.address.errors }}
+                    </li>
+                <li class="new-card">{{ cc.postcode.label_tag }}
+                    {{ cc.postcode }}
+                    {{ cc.postcode.errors }}
+                    </li>
+            </ul>
+            {% csrf_token %}
+            <p><button class="btn btn-default btn-lg">Continue</button></p>
+        </div>
+    </div>
+    <div class="clear"></div>
+</form>
+{% endblock %}
