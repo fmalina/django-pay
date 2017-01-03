@@ -1,5 +1,5 @@
-HTML5 upload with photo rotate/crop tools and Django backend
-============================================================
+Django app to work with subscriptions, payments and payment cards
+=================================================================
 
 .. image:: https://travis-ci.org/fmalina/pay.svg?branch=master
     :target: https://travis-ci.org/fmalina/pay
@@ -61,7 +61,13 @@ To pay from your interface, link:
 
 ::
 
-    <a href="{% url 'pay' %}">Pay</a>
+    <a href="{% url 'subscribe' %}">Subscribe</a>
+
+
+Recurring charges
+-----------------
+Add a cronjob as per crontab.txt
+
 
 Contribute
 ----------
