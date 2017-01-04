@@ -24,7 +24,7 @@ To get the latest version from GitHub
 
 ::
 
-    pip install -e git+git://github.com/fmalina/pay.git#egg=pay
+    pip install -e git+git://github.com/fmalina/django-pay.git#egg=pay
 
 Add ``pay`` to your ``INSTALLED_APPS``
 
