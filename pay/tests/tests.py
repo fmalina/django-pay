@@ -25,8 +25,6 @@ class SubTestCase(TestCase):
             (('GBP', '5425232820001308'), (False, '101', 'DECLINED')),  # MC
             (('GBP', '374101012180018'), (False, '507', 'currency/card combination not allowed'))  # AMEX
         )
-        # disable payment tests as they trigger security flags for Realex from unauthorised IP
-        # tests = ()
 
         def check(currency, cardnumber):
             user = create_test_user()
@@ -35,7 +33,9 @@ class SubTestCase(TestCase):
 
             p, review_needed = auth_payment(card, amount, currency=currency)
             r = p.cardreceipt
-            if r.reason_code == '505':  # IP not whitelisted
+            # 505: IP not whitelisted. 504: There is no such merchant id.
+            if r.reason_code in ('505', '504'):
+                print('Skipping integration test.')
                 print('Realex:', r.details)
                 return 'SKIP'
             return p.complete, r.reason_code, r.details
