@@ -1,8 +1,8 @@
 Django app to work with subscriptions, payments and payment cards
 =================================================================
 
-.. image:: https://travis-ci.org/fmalina/pay.svg?branch=master
-    :target: https://travis-ci.org/fmalina/pay
+.. image:: https://travis-ci.org/fmalina/django-pay.svg?branch=master
+    :target: https://travis-ci.org/fmalina/django-pay
 
 A reusable Django app to work with payments and credit cards.
 Extracted from FlatmateRooms payment features
@@ -24,7 +24,7 @@ To get the latest version from GitHub
 
 ::
 
-    pip install -e git+git://github.com/fmalina/pay.git#egg=pay
+    pip3 install -e git+git://github.com/fmalina/django-pay.git#egg=pay
 
 Add ``pay`` to your ``INSTALLED_APPS``
 
