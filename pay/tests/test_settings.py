@@ -1,5 +1,4 @@
 import os
-from .local_settings import *
 
 APP_ROOT = os.path.abspath(
     os.path.join(os.path.dirname(__file__), '..'))
@@ -58,3 +57,9 @@ INSTALLED_APPS = (
     'django.contrib.admin',
 )
 SECRET_KEY = 'foobar'
+
+# private PAY_REALEX_MERCHANT_ID and PAY_REALEX_PASSWORD for integration test
+try: 
+    from .local_settings import *
+except ImportError:
+    pass
