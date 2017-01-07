@@ -6,7 +6,7 @@ Django app to work with subscriptions, payments and payment cards
 
 A reusable Django app to work with payments and credit cards.
 Extracted from FlatmateRooms payment features
-https://www.FlatmateRooms.co.uk/upgrade (please don't pay if testing)
+https://www.FlatmateRooms.co.uk/upgrade
 
 - contains Realex payment gateway integration
 - validation: card number (MOD10) and expiry, address verification system (AVS)
