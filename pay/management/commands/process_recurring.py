@@ -8,7 +8,7 @@ import time
 
 def charge(s):
     last_payment = s.user.payment_set.filter(complete=True, method='cc').last()
-    card = last_payment.cart
+    card = last_payment.card
     amount = get_amount(s.plan)
     p, review_needed = auth_payment(card, amount)
     if p.complete:
