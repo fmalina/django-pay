@@ -1,4 +1,4 @@
-{% extends 'pay/details.html' %}
+{% extends 'pay/base.html' %}
 {% block cid %} id="receipt"{% endblock %}
 {% block content %}
 <p class="clear">You can
@@ -10,32 +10,36 @@
 <hr>
 
 <h3>Bill to</h3>
-<p><b>{{ payment.user.full_name }}</b>
+{% with payment.cardreceipt.paycard as card %}
+<p><b>{{ payment.user.get_full_name }}</b><br>
 	&lt;<u>{{ payment.user.email }}</u>&gt;<br>
-    {{ payment.address }}<br>
-    {{ payment.postcode.upper }}</b></p>
+    {{ card.address }}<br>
+    {{ card.postcode.upper }}</b></p>
+	Card used: {{ card.cardnumber.obscured }}
 <hr>
+{% endwith %}
 
 <h3>Billing summary </h3>
 <p><b>{{ payment.time_stamp }}</b><br>
 <table>
-    <tr><td>Charge for {{ payment.plan }}<br>
-            premium membership:</td>
-    <!--
-        <td>£{{ pre_vat }}</td></tr>
-    <tr><td>VAT:</td>
-        <td>£{{ vat }}</td></tr>
     <tr>
+		<td>Charge for pro membership:</td>
+    <!--
+        <td>£{{ pre_vat }}</td>
+	</tr>
+    <tr>
+		<td>VAT:</td>
+        <td>£{{ vat }}</td>
     -->
+	</tr>
+    <tr>
         <td>Total:</td>
-        <td>£{{ payment.amount }}</td></tr>
+        <td>£{{ payment.amount }}</td>
+	</tr>
 </table>
 <hr>
 
 <p>Thank you for your business. Please contact us with any
 	questions regarding this receipt at <u>{{ email }}</u>.</p>
 
-<style>
-	td{vertical-align:bottom;padding:.5em .5em 0 0}
-</style>
 {% endblock %}

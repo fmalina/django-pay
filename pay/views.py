@@ -53,45 +53,48 @@ def use_card(request):
     user = request.user
     last_card = PayCard.objects.filter(user=user).last()
 
-    ten_mins_ago = datetime.now() - timedelta(minutes=10)
-    if request.POST and user.payment_set.filter(complete=True,
-                                                time_stamp__gt=ten_mins_ago):
-        messages.info(request, app_settings.PAY_MSG_THROTTLE)
-        return redirect(reverse('search'))
+    # throttling payments to avoid duplicates
+    cutoff = datetime.now() - timedelta(minutes=app_settings.PAY_THROTTLE_TIME)
+    if app_settings.PAY_THROTTLE_TIME and\
+    request.POST and user.payment_set.filter(complete=True,
+                                             time_stamp__gt=cutoff):
+        msg = app_settings.PAY_MSG_THROTTLE
+        return render(request, 'pay/duplicate.html', {'msg': msg})
 
     cc = PayCardForm(request.POST or None, label_suffix='',
                      initial={'last_card': bool(last_card)})
     if cc.is_valid():
         d = cc.cleaned_data
-        s.plan = d['plan']
-        if d['method'] == 'cc':
-            if not d['last_card']:
-                card = PayCard(
-                    expire_month=d['expire_month'],
-                    expire_year=d['expire_year'],
-                    holder=d['holder'],
-                    address=d['address'],
-                    postcode=d['postcode']
-                )
-                card.save()
-                card.store_no(d['cardnumber'])
-            cvv = d['cvv']
-            
-            plan = user.subscription.plan
-            amount = get_amount(plan)
-            p, review_needed = auth_payment(card, amount, cvv=cvv)
-            if p.complete:
-                if not review_needed:
-                    app_settings.PAY_SUCCESS_CALLBACK(user, int(plan))
-                else:
-                    app_settings.PAY_REVIEW_CALLBACK(user)
-                    messages.success(request, app_settings.PAY_MSG_SUCCESS)
-                # email?
-                request.session['payment'] = p.id
-                return redirect(reverse('complete'))
+        if not d['last_card']:
+            card = PayCard(
+                expire_month=d['expire_month'],
+                expire_year=d['expire_year'],
+                holder=d['holder'],
+                address=d['address'],
+                postcode=d['postcode'],
+                user=user
+            )
+            card.save()
+            card.store_no(d['cardnumber'])
+        else:
+            card = last_card
+        cvv = d['cvv']
+        
+        plan = user.subscription.plan
+        amount = get_amount(plan)
+        p, review_needed = auth_payment(card, amount, cvv=cvv)
+        if p.complete:
+            if not review_needed:
+                app_settings.PAY_SUCCESS_CALLBACK(user, int(plan))
             else:
-                msg = app_settings.PAY_MSG_FAIL.format(error=p.details)
-                messages.info(request, msg)
+                app_settings.PAY_REVIEW_CALLBACK(user)
+                messages.success(request, app_settings.PAY_MSG_SUCCESS)
+            # email?
+            request.session['payment'] = p.id
+            return redirect(reverse('complete'))
+        else:
+            msg = app_settings.PAY_MSG_FAIL.format(error=p.cardreceipt.details)
+            messages.info(request, msg)
 
     return render(request, 'pay/payment.html', {
         'title': 'Pay by card',
@@ -147,11 +150,9 @@ def complete(request):
         pid = request.session['payment']
         p = get_object_or_404(Payment, pk=pid)
         del request.session['payment']
-        message = render_to_string('pay/completed.html', {'value': int(p.amount)})
-        messages.success(request, message)
+        return render(request, 'pay/completed.html', {'value': int(p.amount)})
     except KeyError:
-        pass
-    return redirect('/')
+        return redirect('/')
 
 
 @login_required
@@ -181,6 +182,7 @@ def receipt(request, id):
                 'payment': p,
                 'pre_vat': format_vat(pre_vat),
                 'vat': format_vat(vat),
+                'email': settings.ADMIN_EMAIL,
                 'title': 'Receipt %s' % p.pk
             })
         else:

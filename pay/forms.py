@@ -61,13 +61,13 @@ class SubscribeForm(forms.Form):
 
 
 class PayCardForm(forms.Form):
-    cardnumber = CCNumberField(19, label='Card number')
-    holder = forms.CharField(75, label='Cardholder’s name')
+    cardnumber = CCNumberField(19, label='Card number', required=False)
+    holder = forms.CharField(75, label='Cardholder’s name', required=False)
     address = forms.CharField(150, label='Billing address *',
-        widget=forms.Textarea(attrs={'rows': 3, 'cols': 25}))
-    postcode = forms.CharField(15, label='Billing postcode *')
-    expire_month = forms.ChoiceField(pay_models.MONTH_CHOICES, label='Expires on')
-    expire_year = forms.ChoiceField(pay_models.YEAR_CHOICES)
+        widget=forms.Textarea(attrs={'rows': 3, 'cols': 25}), required=False)
+    postcode = forms.CharField(15, label='Billing postcode *', required=False)
+    expire_month = forms.ChoiceField(pay_models.MONTH_CHOICES, label='Expires on', required=False)
+    expire_year = forms.ChoiceField(pay_models.YEAR_CHOICES, required=False)
     last_card = forms.BooleanField(False, widget=forms.HiddenInput)
     cvv = forms.CharField(4, label='Security code (CVV)', required=False)
 

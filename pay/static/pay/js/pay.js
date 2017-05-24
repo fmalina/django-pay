@@ -1,10 +1,4 @@
-function change_method(){
-    if($('input[value=pp]').is(':checked')){
-        $('#cc-fields').fadeOut();
-    } else {
-        $('#cc-fields').fadeIn();
-    }
-}
+
 function  newCard(){
 	$('.last-card').hide();
 	$('.new-card').show();
@@ -20,10 +14,6 @@ function lastCard(){
 }
 
 $(function(){
-    change_method();
-    $('#method').change(function(){
-        change_method();
-    });
 	$('.payment-card i').click(function(){
 		$('.payment-card i').removeClass('active');
 		$(this).addClass('active');
