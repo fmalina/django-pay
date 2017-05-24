@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 
 def add_expiry(user, days):
     start = datetime.now()
-    if user.subscription.expires and user.subscription.expires > datetime.now():
+    if user.subscription.is_active():
         start = user.subscription.expires
     user.subscription.expires = start + timedelta(days=days)
     user.subscription.save()
