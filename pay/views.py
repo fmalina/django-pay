@@ -140,7 +140,6 @@ def paypal(request):
     for k, v in params.items():
         url.append('%s=%s' % (k, urllib.parse.quote(str(v))))
     url = '&'.join(url)
-    print(params, url)
     return redirect(url)
 
 
