@@ -5,3 +5,7 @@
 <link rel="stylesheet" href="{% static 'pay/css/pay.css' %}"/>
 <script src="{% static 'pay/js/pay.js' %}"></script>
 {% endblock %}
+
+{% block messages %}
+{% include 'pay/messages.html' %}
+{% endblock %}

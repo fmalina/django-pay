@@ -39,10 +39,9 @@ class CardNumber(models.Model):
         return self.decrypted[-4:]
 
     def obscured(self):
-        cardnumber = self.decrypted
         xxxx = ''
         i = 0
-        for x in cardnumber:
+        for x in self.decrypted:
             i = i + 1
             if i == 4:
                 str = 'X '
@@ -50,7 +49,7 @@ class CardNumber(models.Model):
             else:
                 str = 'X'
             xxxx = xxxx + str
-        return xxxx[0:-5] + ' ' + self.ending(cardnumber)
+        return xxxx[0:-5] + ' ' + self.ending()
 
     @property
     def decrypted(self):
@@ -218,3 +217,6 @@ class CardReceipt(models.Model):
         choices=AVS_RESPONSES, blank=True)
     avs_postcode = models.CharField('AVS postcode check', max_length=1,
         choices=AVS_RESPONSES, blank=True)
+
+    def __str__(self):
+        return self.details

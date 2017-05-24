@@ -40,7 +40,7 @@ $(function(){
                 {% if cc.non_field_errors %}
                     <li>{{ cc.non_field_errors }}</li>
                 {% endif %}
-                
+
                 {% if last_card %}
                     {{ cc.last_card }}
                     <li class="last-card">
@@ -56,8 +56,7 @@ $(function(){
                         <a href="#now" onclick="lastCard()">+ show last used card</a>
                         </li>
                 {% endif %}
-            
-            
+
                 <li class="new-card">{{ cc.cardnumber.label_tag }}
                     {{ cc.cardnumber }}
                     <b class="secure">
@@ -95,7 +94,7 @@ $(function(){
                     </li>
             </ul>
             {% csrf_token %}
-            <p><button class="btn btn-default btn-lg">Continue</button></p>
+            <p><button class="btn btn-default btn-lg center-block">Continue</button></p>
         </div>
     </div>
     <div class="clear"></div>

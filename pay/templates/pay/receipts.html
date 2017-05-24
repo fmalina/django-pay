@@ -7,11 +7,13 @@
 		{% regroup payments by time_stamp|date:"Y" as year_list %}
 		{% for year in year_list %}
 		<li><b>{{ year.grouper }}</b>
-		    <ul>
+		    <ul class="nav nav-pills nav-stacked">
 		    {% for p in year.list %}
 		    <li><a href="{{ p.get_absolute_url }}">
-				<i>{{ p.time_stamp|date:"M j" }}</i>
-				{{ p.plan }}</a></li>
+				{{ p.time_stamp|date:"M j" }}
+				£{{ p.amount }}
+				</a>
+			</li>
 		    {% endfor %}
 		    </ul>
 		</li>
