@@ -94,7 +94,7 @@ def use_card(request):
             return redirect(reverse('complete'))
         else:
             msg = app_settings.PAY_MSG_FAIL.format(error=p.cardreceipt.details)
-            messages.info(request, msg)
+            messages.warning(request, msg)
 
     return render(request, 'pay/payment.html', {
         'title': 'Pay by card',
