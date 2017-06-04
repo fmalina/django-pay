@@ -51,6 +51,9 @@ class CardNumber(models.Model):
             xxxx = xxxx + str
         return xxxx[0:-5] + ' ' + self.ending()
 
+    def __str__(self):
+        return self.obscured()
+
     @property
     def decrypted(self):
         return _decrypt_code(self.encrypted)
@@ -76,11 +79,12 @@ class PayCard(models.Model):
         in a visible form
         """
         encrypted = _encrypt_code(cardnumber_clear)
-        if not self.pk:
-            self.save()
         cardnumber = CardNumber(paycard=self, encrypted=encrypted)
         cardnumber.save()
         self.cardnumber_ending = cardnumber.ending()
+
+        if not self.pk:
+            self.save()
 
     def expdate(self):
         mm = str(self.expire_month).zfill(2)
