@@ -51,7 +51,6 @@ PAY_PAYPAL_EMAIL = getattr(settings,
 
 PAY_PLANS = getattr(settings,
     'PAY_PLANS', {
-        0: ('0', ''),
         30: ('29.00', '30 days - £29'),
         365: ('199.00', 'One year - £199'),
     })

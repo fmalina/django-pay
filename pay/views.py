@@ -43,6 +43,7 @@ def subscribe(request):
 
     return render(request, 'pay/plans.html', {
         'title': app_settings.PAY_TITLE,
+        'plans': app_settings.PAY_PLAN_CHOICES,
         'plan': plan,
         'form': form
     })
