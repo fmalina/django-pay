@@ -20,7 +20,7 @@ $(function(){
 
 <form method="post" action="{% url 'payment' %}#payment" id="cc"
 	onsubmit="window.onbeforeunload = null">
-    <p>Your plan: <b>{{ user.subscription.get_plan_display }}</b>
+    <p>Your plan: <b>{{ plan_name }}</b> (£{{ plan_price }})
 		<a href="{% url 'subscribe' %}">- update</a>
     <div id="payment">
         <div id="payment-wrap">
