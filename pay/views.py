@@ -96,10 +96,14 @@ def use_card(request):
         else:
             msg = app_settings.PAY_MSG_FAIL.format(error=p.cardreceipt.details)
             messages.warning(request, msg)
+    plan = app_settings.PAY_PLANS[user.subscription.plan]
+    plan_price, plan_name = plan[0], plan[1]
 
     return render(request, 'pay/payment.html', {
         'title': 'Pay by card',
         'last_card': last_card,
+        'plan_name': plan_name,
+        'plan_price': plan_price,
         'ssl': 'https://',
         'cc': cc
     })
