@@ -49,6 +49,9 @@ PAY_REALEX_HIGH_RISK_COUNTRIES = getattr(settings,
 PAY_PAYPAL_EMAIL = getattr(settings,
     'PAY_PAYPAL_EMAIL',
     'fmalina@gmail.com')
+PAY_RECEIPT_EMAIL = getattr(settings,
+    'PAY_RECEIPT_EMAIL',
+    settings.DEFAULT_FROM_EMAIL)
 
 PAY_PLANS = getattr(settings,
     'PAY_PLANS', {
