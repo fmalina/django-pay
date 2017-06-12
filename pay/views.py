@@ -186,7 +186,7 @@ def receipt(request, id):
                 'payment': p,
                 'pre_vat': format_vat(pre_vat),
                 'vat': format_vat(vat),
-                'email': settings.ADMIN_EMAIL,
+                'email': app_settings.PAY_RECEIPT_EMAIL,
                 'title': 'Receipt %s' % p.pk
             })
         else:
