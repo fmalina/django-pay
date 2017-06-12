@@ -83,7 +83,7 @@ class PayCard(models.Model):
         cardnumber.save()
         self.cardnumber_ending = cardnumber.ending()
 
-        if not self.pk:
+        if not self.pk or self.cardnumber_ending:
             self.save()
 
     def expdate(self):
