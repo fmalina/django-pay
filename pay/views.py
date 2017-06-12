@@ -232,9 +232,9 @@ def add_card(request):
         d.pop('cvv', None)
 
         pc = PayCard(**d)
-        pc.store_no(cardnumber)
         pc.user = request.user
         pc.save()
+        pc.store_no(cardnumber)
         return redirect('paycards')
 
     return render(request, 'pay/add_card.html', {
