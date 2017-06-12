@@ -211,7 +211,7 @@ class CardReceipt(models.Model):
     """Result of a card transaction.
     """
     payment = models.OneToOneField('pay.Payment', primary_key=True)
-    paycard = models.ForeignKey('pay.PayCard')
+    paycard = models.ForeignKey('pay.PayCard', blank=True, null=True)
     details = models.CharField(blank=True, max_length=255)
     authcode = models.CharField(blank=True, max_length=20)
     reference = models.CharField(blank=True, max_length=20)
