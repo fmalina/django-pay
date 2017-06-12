@@ -35,6 +35,7 @@ PAY_FOR_NAME = getattr(settings, 'PAY_FOR_NAME',
 PAY_SITE_URL = getattr(settings, 'PAY_SITE_URL', '')
 PAY_CURRENCY = getattr(settings, 'PAY_CURRENCY', 'GBP')  #  EUR, USD
 PAY_THROTTLE_TIME = getattr(settings, 'PAY_THROTTLE_TIME', 0)  # 0 minutes
+PAY_SECRET_KEY = getattr(settings, 'PAY_SECRET_KEY', settings.SECRET_KEY)
 
 PAY_REALEX_MERCHANT_ID = getattr(settings,
     'PAY_REALEX_MERCHANT_ID',
