@@ -140,7 +140,7 @@ class PayCard(models.Model):
 def _decrypt_code(code):
     """Decrypt code encrypted by _encrypt_code
     """
-    secret_key = settings.SECRET_KEY
+    secret_key = app_settings.PAY_SECRET_KEY
     encryption_object = Blowfish.new(secret_key)
     # strip padding from decrypted credit card number
     return encryption_object.decrypt(base64.b64decode(code)).decode().rstrip('X')
@@ -149,7 +149,7 @@ def _decrypt_code(code):
 def _encrypt_code(code):
     """Encrypt CC codes or code fragments
     """
-    secret_key = settings.SECRET_KEY
+    secret_key = app_settings.PAY_SECRET_KEY
     encryption_object = Blowfish.new(secret_key)
     # block cipher length must be a multiple of 8
     padding = ''
