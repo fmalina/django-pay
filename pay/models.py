@@ -200,7 +200,7 @@ class Payment(models.Model):
         """Payments are voidable if completed by card within the last 24 hours
         """
         return self.complete and\
-            hasattr(self, cardreceipt) and\
+            hasattr(self, 'cardreceipt') and\
             self.time_stamp > datetime.now() - timedelta(days=1)
 
     def __str__(self):
