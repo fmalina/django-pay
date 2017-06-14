@@ -42,6 +42,7 @@ MIDDLEWARE_CLASSES = (
 
     # auth
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
 )
@@ -49,6 +50,7 @@ ROOT_URLCONF = 'pay.tests.test_urls'
 INSTALLED_APPS = (
     'pay',
     'django.contrib.staticfiles',
+    'django.contrib.messages',
 
     # auth (for payments associated to users)
     'django.contrib.auth',

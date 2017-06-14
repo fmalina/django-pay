@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.conf import settings
 from pay.models import PayCard, Subscription, Payment
-from pay.forms import PayCardForm, SubscribeForm
+from pay.forms import PayCardForm, SubscribeForm, SubscriptionForm
 from pay.realex import auth_payment, void_payment
 from pay import app_settings
 from datetime import datetime, timedelta
@@ -46,6 +46,21 @@ def subscribe(request):
         'plans': app_settings.PAY_PLAN_CHOICES,
         'plan': plan,
         'form': form
+    })
+
+
+@login_required
+def subscription(request):
+    user = request.user
+    s, created = Subscription.objects.get_or_create(user=user)
+    form = SubscriptionForm(request.POST or None, instance=s)
+    print(form.is_valid())
+    if form.is_valid():
+        form.save()
+        messages.success(request, 'Subscription successfully updated.')
+    return render(request, 'pay/subscription.html', {
+        'form': form,
+        'subscription': s
     })
 
 

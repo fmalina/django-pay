@@ -60,6 +60,12 @@ class SubscribeForm(forms.Form):
                               required=False)
 
 
+class SubscriptionForm(forms.ModelForm):
+    class Meta:
+        exclude = ['user', 'expires']
+        model = pay_models.Subscription
+
+
 class PayCardForm(forms.Form):
     cardnumber = CCNumberField(19, label='Card number', required=False)
     holder = forms.CharField(75, label='Cardholder’s name', required=False)
