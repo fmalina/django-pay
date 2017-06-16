@@ -46,6 +46,9 @@ PAY_REALEX_PASSWORD = getattr(settings,
 PAY_REALEX_HIGH_RISK_COUNTRIES = getattr(settings,
     'PAY_REALEX_HIGH_RISK_COUNTRIES',
     ['US'])
+PAY_REALEX_AMEX_ENABLED = getattr(settings,
+    'PAY_REALEX_AMEX_ENABLED',
+    False)
 PAY_PAYPAL_EMAIL = getattr(settings,
     'PAY_PAYPAL_EMAIL',
     'fmalina@gmail.com')

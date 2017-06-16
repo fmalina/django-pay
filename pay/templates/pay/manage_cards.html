@@ -9,7 +9,7 @@
 <table class="paycards table">
 	<thead>
 		<tr>
-		<td colspan="3"></td>
+		<td colspan="2"></td>
 		<td>Name on card</td>
 		<td>Expiry date</td>
 		</tr>
@@ -18,7 +18,6 @@
 		<tr>
 		<td class="payment-card">
 			<i><img src="{% static card.logo_img %}" alt="{{ card.card_type }}"></i></td>
-		<td>{{ card.card_type }}</td>
 		<td><b>{{ card.cardnumber.obscured }}</b></td>
 		<td>{{ card.holder }}</td>
 		<td>{{ card.expire_month }}/{{ card.expire_year }}</td>

@@ -120,7 +120,8 @@ def use_card(request):
         'plan_name': plan_name,
         'plan_price': plan_price,
         'ssl': 'https://',
-        'cc': cc
+        'cc': cc,
+        'amex_enabled': app_settings.PAY_REALEX_AMEX_ENABLED
     })
 
 
