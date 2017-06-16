@@ -1,4 +1,4 @@
-{% extends 'pay/base.html' %}
+{% extends 'pay/base_payment.html' %}
 {% load static %}
 {% block extrahead %}
 <script>
@@ -27,7 +27,9 @@ $(function(){
             <div class="payment-card">
 				<i><img src="{% static 'pay/img/logo_visa.svg' %}" alt="Visa" ></i>
 				<i><img src="{% static 'pay/img/logo_mc.svg' %}" alt="MasterCard"></i>
+				{% if amex_enabled %}
 				<i><img src="{% static 'pay/img/logo_amex.svg' %}" alt="Amex"></i>
+				{% endif %}
 			</div>
 			<div class="payment-paypal">
 				or

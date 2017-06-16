@@ -4,12 +4,12 @@
 <h1>{{ title }}</h1>
 <form method="post" action="#" id="plans">
     {% csrf_token %}
-	{% for plan_value, plan_name in plans %}
-    	<p><button name="plan" value="{{ plan_value }}"
-			type="submit" class="btn btn-default btn-block">
-				{{ plan_name }}<br>
-				<small>Choose plan</small>
-			</button>
-	{% endfor %}
+    {% for plan_value, plan_name in plans %}
+        <p><button name="plan" value="{{ plan_value }}"
+            type="submit" class="btn btn-default btn-block">
+                {{ plan_name }}<br>
+                <small>Choose plan</small>
+            </button>
+    {% endfor %}
 </form>
 {% endblock %}

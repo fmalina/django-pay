@@ -1,6 +1,6 @@
 .payment-card i{border:1px dotted #ddd;border-radius:5px;padding:5px;
 	box-shadow:1px 1px 1px 0 rgba(0,0,0,.5);
-	float:left;
+	float:left;box-sizing:border-box;
 	height:45px;width:70px;margin-right:5px;}
 .payment-card i.active{
 	border:1px solid #337ab7}
