@@ -48,7 +48,7 @@ class Migration(migrations.Migration):
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to=settings.AUTH_USER_MODEL)),
                 ('plan', models.IntegerField(blank=True, choices=[(0, ''), (365, 'One year - £199'), (30, '30 days - £29')], default=0, null=True, verbose_name='Plan')),
                 ('expires', models.DateTimeField(blank=True, null=True, verbose_name='active until')),
-                ('recurring', models.BooleanField(default=False, verbose_name='Enable recurring billing')),
+                ('recurring', models.BooleanField(default=True, verbose_name='Enable recurring billing')),
                 ('updated_at', models.DateTimeField(default=datetime.datetime.now, editable=False)),
             ],
         ),

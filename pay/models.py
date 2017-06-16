@@ -163,7 +163,7 @@ class Subscription(models.Model):
     plan = models.IntegerField('Plan', choices=app_settings.PAY_PLAN_CHOICES,
                                null=True, blank=True, default=0)
     expires = models.DateTimeField('active until', null=True, blank=True)
-    recurring = models.BooleanField('Enable recurring billing', default=False)
+    recurring = models.BooleanField('Enable recurring billing', default=True)
     updated_at = models.DateTimeField(default=datetime.now, editable=False)
 
     @property
