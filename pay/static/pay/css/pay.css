@@ -6,6 +6,7 @@
 	border:1px solid #337ab7}
 .payment-card i img{max-width:60px;max-height:35px;
     vertical-align: middle;}
+.payment-card i img[alt="Visa"]{padding-top:6px}
 /*
 .payment-card i:before{
     content: "";
