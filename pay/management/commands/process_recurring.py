@@ -23,5 +23,5 @@ class Command(BaseCommand):
         now = datetime.now()
         yesterday = now - timedelta(hours=24)
 
-        for s in Subscription.objects.filter(expires__range=(yesterday, now)):
+        for s in Subscription.objects.filter(expires__range=(yesterday, now), recurring=True):
             charge(s)
