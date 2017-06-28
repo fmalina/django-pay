@@ -26,7 +26,7 @@ class Command(BaseCommand):
     """
     def handle(self, *args, **kwargs):
         now = datetime.now()
-        yesterday = now - timedelta(hours=24)
+        tomorrow = now + timedelta(hours=24)
         print('Processing recurring charges:', now)
-        for s in Subscription.objects.filter(expires__range=(yesterday, now), recurring=True):
+        for s in Subscription.objects.filter(expires__range=(now, tomorrow), recurring=True):
             charge(s)
