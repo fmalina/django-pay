@@ -8,7 +8,7 @@ import time
 
 def charge(s):
     last_payment = s.user.payment_set.filter(complete=True, method='cc').last()
-    card = last_payment.card
+    card = last_payment.paycard
     amount = get_amount(s.plan)
     print()
     print(s.user, s.plan, amount)
