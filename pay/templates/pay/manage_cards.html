@@ -6,7 +6,7 @@
 {% block content %}
 <h1>Your credit/debit cards</h1>
 {% if paycards %}
-<table class="paycards table">
+<table class="paycards table offset">
 	<thead>
 		<tr>
 		<td colspan="2"></td>
@@ -26,7 +26,9 @@
 	</tbody>
 </table>
 {% else %}
-	<p>No credit/debit cards found.
+	<p class="offset">No credit/debit cards found.
 {% endif %}
-	<p><a class="btn btn-default" href="{% url 'add_card' %}">Add card</a>
+	<p class="offset">
+		<a class="btn btn-default" href="{% url 'add_card' %}">
+			Add card</a>
 {% endblock %}
