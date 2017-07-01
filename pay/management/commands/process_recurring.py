@@ -7,18 +7,21 @@ import time
 
 
 def charge(s):
-    last_payment = s.user.payment_set.filter(complete=True, method='cc').last()
-    card = last_payment.paycard
-    amount = get_amount(s.plan)
-    print()
-    print(s.user, s.plan, amount)
-    p, review_needed = auth_payment(card, amount)
-    if p.complete:
-        s.expires = s.expires + timedelta(days=s.plan)
-        s.save()
-        print('Success, charged', p.amount)
+    last_payment = s.user.payment_set.filter(complete=True).last()
+    if last_payment.method == 'pp':
+        print('Paypal not supported')
     else:
-        print('Failure', p.cardreceipt.details)
+        card = last_payment.cardreceipt.paycard
+        amount = get_amount(s.plan)
+        print()
+        print(s.user, s.plan, amount)
+        p, review_needed = auth_payment(card, amount)
+        if p.complete:
+            s.expires = s.expires + timedelta(days=s.plan)
+            s.save()
+            print('Success, charged', p.amount)
+        else:
+            print('Failure', p.cardreceipt.details)
 
 
 class Command(BaseCommand):
