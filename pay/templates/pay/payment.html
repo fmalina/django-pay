@@ -20,7 +20,7 @@ $(function(){
 
 <form method="post" action="{% url 'payment' %}#payment" id="cc"
 	onsubmit="window.onbeforeunload = null">
-    <p>Your plan: <b>{{ plan_name }}</b> (£{{ plan_price }})
+    <p class="pay-plan">Your plan: <b>{{ plan_name }}</b> (£{{ plan_price }})
 		<a href="{% url 'subscribe' %}">- update</a>
     <div id="payment">
         <div id="payment-wrap">
@@ -63,7 +63,7 @@ $(function(){
                     {{ cc.cardnumber }}
                     <b class="secure">
                         <i class="glyphicon glyphicon-lock"></i>
-                        secure</b>
+                        <span>secure</span></b>
                     {{ cc.cardnumber.errors }}
                     </li>
                 <li class="new-card">{{ cc.expire_month.label_tag }}
