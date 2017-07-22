@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 from pay.models import Subscription
 from pay.realex import auth_payment
 from pay.views import get_amount
+from pay import app_settings
 from datetime import datetime, timedelta
 import time
 
@@ -15,9 +16,15 @@ def charge(s):
         if not card:
             print('Card not on receipt.')
             return
-        cvv = getattr(card, 'cvv', None)
-        if cvv:
-            cvv = cvv.decrypted
+
+        cvv = None
+        if app_settings.PAY_STORE_CVV:
+            cvv = getattr(card, 'cvv', None)
+            if cvv:
+                cvv = cvv.decrypted
+            else:
+                print('CVV not present')
+                return
 
         amount = get_amount(s.plan)
         print()
