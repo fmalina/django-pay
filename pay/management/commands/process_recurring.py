@@ -12,6 +12,9 @@ def charge(s):
         print('Paypal not supported')
     else:
         card = last_payment.cardreceipt.paycard
+        if not card:
+            print('Card not on receipt.')
+            return
         cvv = getattr(card, 'cvv', None)
         if cvv:
             cvv = cvv.decrypted
