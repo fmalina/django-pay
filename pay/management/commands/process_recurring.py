@@ -12,10 +12,14 @@ def charge(s):
         print('Paypal not supported')
     else:
         card = last_payment.cardreceipt.paycard
+        cvv = getattr(card, 'cvv', None)
+        if cvv:
+            cvv = cvv.decrypted
+
         amount = get_amount(s.plan)
         print()
         print(s.user, s.plan, amount)
-        p, review_needed = auth_payment(card, amount)
+        p, review_needed = auth_payment(card, amount, cvv)
         if p.complete:
             s.expires = s.expires + timedelta(days=s.plan)
             s.save()

@@ -56,6 +56,10 @@ PAY_RECEIPT_EMAIL = getattr(settings,
     'PAY_RECEIPT_EMAIL',
     settings.DEFAULT_FROM_EMAIL)
 
+PAY_STORE_CVV = getattr(settings,
+    'PAY_STORE_CVV', False)
+    # Set to True for non PCI compliant Hotel style integration
+
 PAY_PLANS = getattr(settings,
     'PAY_PLANS', {
         30: ('29.00', '30 days - £29'),

@@ -35,7 +35,7 @@ def create_test_card(user, cardnumber):
         expire_year=2020
     )
     card.save()
-    card.store_no(cardnumber)
+    card.store_no(cardnumber, '000')
     return card
 
 
