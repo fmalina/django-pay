@@ -74,13 +74,19 @@ class PayCard(models.Model):
         choices=YEAR_CHOICES, null=True, blank=True)
     created_at = models.DateTimeField(default=datetime.now, editable=False)
 
-    def store_no(self, cardnumber_clear):
+    def store_no(self, cardnumber_clear, cvv_clear):
         """Take as input a valid cc, encrypt it and store the last 4 digits
         in a visible form
         """
         encrypted = _encrypt_code(cardnumber_clear)
         cardnumber = CardNumber(paycard=self, encrypted=encrypted)
         cardnumber.save()
+
+        if app_settings.PAY_STORE_CVV:
+            encrypted = _encrypt_code(cvv_clear)
+            cvv = CVV(paycard=self, encrypted=encrypted)
+            cvv.save()
+
         self.cardnumber_ending = cardnumber.ending()
 
         if not self.pk or self.cardnumber_ending:
@@ -135,6 +141,23 @@ class PayCard(models.Model):
 
     def __str__(self):
         return 'ending in %s' % self.cardnumber_ending
+
+
+class CVV(models.Model):
+    """Encrypted CVV for temporary storage. Delete, when not needed anymore.
+    Optional Non-PCI compliant integration for room booking deposit protection.
+    PAY_STORE_CVV setting must be set to True to enable.
+    """
+    paycard = models.OneToOneField('pay.PayCard', primary_key=True)
+    encrypted = models.CharField('Encrypted CVV', max_length=40,
+        blank=True, editable=False)
+
+    def __str__(self):
+        return 'XXX'
+
+    @property
+    def decrypted(self):
+        return _decrypt_code(self.encrypted)
 
 
 def _decrypt_code(code):

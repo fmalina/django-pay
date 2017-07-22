@@ -91,7 +91,7 @@ def use_card(request):
                 user=user
             )
             card.save()
-            card.store_no(d['cardnumber'])
+            card.store_no(d['cardnumber'], d['cvv'])
         else:
             card = last_card
         cvv = d['cvv']
@@ -241,6 +241,7 @@ def add_card(request):
     if form.is_valid():
         d = form.cleaned_data
         cardnumber = d['cardnumber']
+        cvv = d['cvv']
 
         d.pop('cardnumber', None)
         d.pop('last_card', None)
@@ -250,7 +251,7 @@ def add_card(request):
         pc = PayCard(**d)
         pc.user = request.user
         pc.save()
-        pc.store_no(cardnumber)
+        pc.store_no(cardnumber, cvv)
         return redirect('paycards')
 
     return render(request, 'pay/add_card.html', {
