@@ -83,10 +83,10 @@ If you want to use Django Pay to develop and run commercial projects and applica
 
 Once purchased, you are granted a commercial BSD style license and all set to use Django Pay in your business.
 
-`Small Team License (£400) <https://fmalina.github.io/pay.html?amount=400&msg=Django Pay Team license>`_
+`Small Team License (£400) <https://fmalina.github.io/pay.html?amount=400&msg=Django_Pay_Team_License>`_
 Small Team License for up to 8 developers
 
-`Organization License (£1200) <https://fmalina.github.io/pay.html?amount=1200&msg=Django Pay Organisation License>`_
+`Organization License (£1200) <https://fmalina.github.io/pay.html?amount=1200&msg=Django_Pay_Organisation_License>`_
 Commercial Organization License for Unlimited developers
 
 Open source license
