@@ -6,7 +6,7 @@ Django app to work with subscriptions, payments and payment cards
 
 A reusable Django app to work with payments and credit cards.
 Extracted from FlatmateRooms payment features
-https://www.FlatmateRooms.co.uk/upgrade
+https://www.FlatmateRooms.co.uk/subscribe
 
 - contains Realex payment gateway integration
 - validation: card number (MOD10) and expiry, address verification system (AVS)
@@ -73,4 +73,22 @@ Contribute
 ----------
 File issues. Fork and send pull requests. Tell developers integrating payments.
 
-Thank you.
+
+Dual Licensing
+--------------
+
+Commercial license
+~~~~~~~~~~~~~~~~~~
+If you want to use Django Pay to develop and run commercial projects and applications, the Commercial license is the appropriate license. With this option, your source code is kept proprietary.
+
+Once purchased, you are granted a commercial BSD style license and all set to use Django Pay in your business.
+
+`Small Team License (£400) <https://fmalina.github.io/pay.html?amount=400&msg=Django Pay Team license>`_
+Small Team License for up to 8 developers
+
+`Organization License (£1200) <https://fmalina.github.io/pay.html?amount=1200&msg=Django Pay Organisation License>`_
+Commercial Organization License for Unlimited developers
+
+Open source license
+~~~~~~~~~~~~~~~~~~~
+If you are creating an open source application under a license compatible with the GNU GPL license v3, you may use Django Pay under the terms of the GPLv3.
