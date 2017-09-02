@@ -27,6 +27,13 @@ PAYPAL_URL = 'https://www.paypal.com/cgi-bin/webscr'
 def get_amount(plan):
     return Decimal(app_settings.PAY_PLANS[int(plan)][0])
 
+def get_user(request, user_id):
+    user = request.user
+    if user_id:
+        user = get_object_or_404(User, id=user_id)
+        if not user==request.user and not request.user.is_staff:
+            return False
+    return user
 
 @login_required
 def subscribe(request):
@@ -50,8 +57,10 @@ def subscribe(request):
 
 
 @login_required
-def subscription(request):
-    user = request.user
+def subscription(request, user_id=None):
+    user = get_user(request, user_id)
+    if not user:
+        return HttpResponse('')
     s, created = Subscription.objects.get_or_create(user=user)
     form = SubscriptionForm(request.POST or None, instance=s)
     print(form.is_valid())
@@ -218,10 +227,13 @@ def receipt(request, id):
 
 
 @login_required
-def receipts(request):
-    payments = request.user.payment_set.filter(complete=True)\
-                           .only('id', 'user', 'amount', 'time_stamp')\
-                           .order_by('-id')
+def receipts(request, user_id=None):
+    user = get_user(request, user_id)
+    if not user:
+        return HttpResponse('')
+    payments = user.payment_set.filter(complete=True)\
+                   .only('id', 'user', 'amount', 'time_stamp')\
+                   .order_by('-id')
     return render(request, 'pay/receipts.html', {
         'payments': payments
     })
