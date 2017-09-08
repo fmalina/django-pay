@@ -13,6 +13,7 @@ def charge(s):
         print('Paypal not supported')
     else:
         card = False
+        # card may have been removed
         if hasattr(last_payment, 'cardreceipt'):
             card = last_payment.cardreceipt.paycard
         if not card:
@@ -27,8 +28,11 @@ def charge(s):
             else:
                 print('CVV not present')
                 return
-
-        amount = get_amount(s.plan)
+        try:
+            amount = get_amount(s.plan)
+        # plan was removed
+        except KeyError:
+            amount = last_payment.amount
         print()
         print(s.user, s.plan, amount)
         p, review_needed = auth_payment(card, amount, cvv)
