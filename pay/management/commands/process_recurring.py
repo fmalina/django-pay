@@ -12,7 +12,9 @@ def charge(s):
     if last_payment.method == 'pp':
         print('Paypal not supported')
     else:
-        card = last_payment.cardreceipt.paycard
+        card = False
+        if hasattr(last_payment, 'cardreceipt'):
+            card = last_payment.cardreceipt.paycard
         if not card:
             print('Card not on receipt.')
             return
