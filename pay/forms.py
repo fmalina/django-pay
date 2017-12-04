@@ -56,8 +56,8 @@ class CCNumberField(forms.CharField):
 
 
 class SubscribeForm(forms.Form):
-     plan = forms.ChoiceField(app_settings.PAY_PLAN_CHOICES, initial=30,
-                              required=False)
+     plan = forms.ChoiceField(
+         choices=app_settings.PAY_PLAN_CHOICES, initial=30, required=False)
 
 
 class SubscriptionForm(forms.ModelForm):
@@ -67,15 +67,22 @@ class SubscriptionForm(forms.ModelForm):
 
 
 class PayCardForm(forms.Form):
-    cardnumber = CCNumberField(19, label='Card number', required=False)
-    holder = forms.CharField(75, label='Cardholder’s name', required=False)
-    address = forms.CharField(150, label='Billing address *',
+    cardnumber = CCNumberField(
+        max_length=19, label='Card number', required=False)
+    holder = forms.CharField(
+        max_length=75, label='Cardholder’s name', required=False)
+    address = forms.CharField(
+        max_length=150, label='Billing address *',
         widget=forms.Textarea(attrs={'rows': 3, 'cols': 25}), required=False)
-    postcode = forms.CharField(15, label='Billing postcode *', required=False)
-    expire_month = forms.ChoiceField(pay_models.MONTH_CHOICES, label='Expires on', required=False)
-    expire_year = forms.ChoiceField(pay_models.YEAR_CHOICES, required=False)
-    last_card = forms.BooleanField(False, widget=forms.HiddenInput)
-    cvv = forms.CharField(4, label='Security code (CVV)', required=False)
+    postcode = forms.CharField(
+        max_length=15, label='Billing postcode *', required=False)
+    expire_month = forms.ChoiceField(
+        choices=pay_models.MONTH_CHOICES, label='Expires on', required=False)
+    expire_year = forms.ChoiceField(
+        choices=pay_models.YEAR_CHOICES, required=False)
+    last_card = forms.BooleanField(required=False, widget=forms.HiddenInput)
+    cvv = forms.CharField(
+        max_length=4, label='Security code (CVV)', required=False)
 
     def clean_holder(self):
         holder = self.cleaned_data['holder']

@@ -31,7 +31,8 @@ class CardNumber(models.Model):
     """Card number (PAN)
     Delete, when not needed anymore.
     """
-    paycard = models.OneToOneField('pay.PayCard', primary_key=True)
+    paycard = models.OneToOneField(
+        'pay.PayCard', primary_key=True, on_delete=models.CASCADE)
     encrypted = models.CharField('Encrypted PAN', max_length=40,
         blank=True, editable=False)
 
@@ -62,7 +63,8 @@ class CardNumber(models.Model):
 class PayCard(models.Model):
     """Card details that can be kept indefinitely with payments/transactions.
     """
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     cardnumber_ending = models.CharField('Card number (last 4 digits)',
         max_length=4, blank=True)
     holder = models.CharField('Card holder’s name', max_length=75, blank=True)
@@ -148,7 +150,8 @@ class CVV(models.Model):
     Optional Non-PCI compliant integration for room booking deposit protection.
     PAY_STORE_CVV setting must be set to True to enable.
     """
-    paycard = models.OneToOneField('pay.PayCard', primary_key=True)
+    paycard = models.OneToOneField(
+        'pay.PayCard', primary_key=True, on_delete=models.CASCADE)
     encrypted = models.CharField('Encrypted CVV', max_length=40,
         blank=True, editable=False)
 
@@ -182,7 +185,8 @@ def _encrypt_code(code):
 
 
 class Subscription(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, primary_key=True)
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, primary_key=True, on_delete=models.CASCADE)
     plan = models.IntegerField('Plan', choices=app_settings.PAY_PLAN_CHOICES,
                                null=True, blank=True, default=0)
     expires = models.DateTimeField('active until', null=True, blank=True)
@@ -203,7 +207,8 @@ class Subscription(models.Model):
 class Payment(models.Model):
     """Payments via credit or debit card and PayPal
     """
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     method = models.CharField('Payment Method', blank=True, max_length=2,
                               choices=PAYMENT_METHODS, default='cc')
     amount = models.DecimalField(max_digits=8, decimal_places=2)
@@ -232,8 +237,10 @@ class Payment(models.Model):
 class CardReceipt(models.Model):
     """Result of a card transaction.
     """
-    payment = models.OneToOneField('pay.Payment', primary_key=True)
-    paycard = models.ForeignKey('pay.PayCard', blank=True, null=True)
+    payment = models.OneToOneField(
+        'pay.Payment', primary_key=True, on_delete=models.CASCADE)
+    paycard = models.ForeignKey(
+        'pay.PayCard', blank=True, null=True, on_delete=models.CASCADE)
     details = models.CharField(blank=True, max_length=255)
     authcode = models.CharField(blank=True, max_length=20)
     reference = models.CharField(blank=True, max_length=20)
