@@ -1,11 +1,12 @@
 from django.template.loader import render_to_string
 from django.conf import settings
-from pay.models import Payment, CardReceipt, Subscription
+
+from pay.models import Payment, CardReceipt, PayCard
 from pay import app_settings
+
 from time import strftime
 from lxml import etree
 from hashlib import sha1
-from decimal import Decimal
 from datetime import datetime, timedelta
 import urllib.request
 import urllib.error
