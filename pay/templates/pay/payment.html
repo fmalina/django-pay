@@ -18,7 +18,7 @@ $(function(){
 {% block cid %}{% endblock %}
 {% block content %}
 
-<form method="post" action="{% url 'payment' %}#payment" id="cc"
+<form method="post" action="{% url 'payment' %}" id="cc"
 	onsubmit="window.onbeforeunload = null">
     <p class="pay-plan">Your plan: <b>{{ plan_name }}</b> (£{{ plan_price }})
 		<a href="{% url 'subscribe' %}">- update</a>

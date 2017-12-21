@@ -1,5 +1,6 @@
 from django.conf.urls import url
 from pay import views
+from pay import paypal
 
 urlpatterns = [
     url(r'^subscribe$', views.subscribe, name='subscribe'),
@@ -15,6 +16,6 @@ urlpatterns = [
         name='user_subscription'),
     url(r'^receipt/(?P<id>[0-9]+)$', views.receipt, name='receipt'),
     url(r'^voiding/(?P<id>[0-9]+)$', views.void, name='void'),
-    url(r'^paypal$', views.paypal, name='paypal'),
-    url(r'^paypal_ipn$', views.ipn, name='paypal_ipn'),
+    url(r'^paypal$', paypal.paypal, name='paypal'),
+    url(r'^paypal_ipn$', paypal.ipn, name='paypal_ipn'),
 ]
