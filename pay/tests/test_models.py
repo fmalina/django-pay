@@ -54,3 +54,10 @@ class PaymentTestCase(TestCase):
         self.assertEqual(p.voidable(), False)
         self.assertEqual(p.amount, Decimal('19.99'))
         self.assertEqual(p.user.paycard_set.all().count(), 3)
+
+    def test_delete_cardnumber(self):
+        """Test that when cardnuber is discarded, other card details remain.
+        """
+        cc = PayCard.objects.first()
+        cc.cardnumber.delete()
+        self.assertEqual(cc.pk, PayCard.objects.first().pk)

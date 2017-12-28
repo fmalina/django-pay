@@ -31,7 +31,8 @@ class CardNumber(models.Model):
     """Card number (PAN)
     Delete, when not needed anymore.
     """
-    paycard = models.OneToOneField('pay.PayCard', primary_key=True)
+    paycard = models.OneToOneField('pay.PayCard', primary_key=True,
+                                   on_delete=models.CASCADE)
     encrypted = models.CharField('Encrypted PAN', max_length=40,
         blank=True, editable=False)
 
@@ -148,7 +149,8 @@ class CVV(models.Model):
     Optional Non-PCI compliant integration for room booking deposit protection.
     PAY_STORE_CVV setting must be set to True to enable.
     """
-    paycard = models.OneToOneField('pay.PayCard', primary_key=True)
+    paycard = models.OneToOneField('pay.PayCard', primary_key=True,
+                                   on_delete=models.CASCADE)
     encrypted = models.CharField('Encrypted CVV', max_length=40,
         blank=True, editable=False)
 
