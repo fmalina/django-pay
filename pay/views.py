@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpResponse, Http404
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
@@ -23,6 +23,7 @@ def get_user(request, user_id):
         if not user==request.user and not request.user.is_staff:
             return False
     return user
+
 
 @login_required
 def subscribe(request):
