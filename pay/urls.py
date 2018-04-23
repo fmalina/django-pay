@@ -1,21 +1,21 @@
-from django.conf.urls import url
+from django.urls import path
 from pay import views
 from pay import paypal
 
 urlpatterns = [
-    url(r'^subscribe$', views.subscribe, name='subscribe'),
-    url(r'^use_card$', views.use_card, name='payment'),
-    url(r'^complete$', views.complete, name='complete'),
-    url(r'^paycards$', views.paycards, name='paycards'),
-    url(r'^add_card$', views.add_card, name='add_card'),
-    url(r'^receipts$', views.receipts, name='receipts'),
-    url(r'^receipts/(?P<user_id>[0-9]+)$', views.receipts,
+    path('subscribe', views.subscribe, name='subscribe'),
+    path('use_card', views.use_card, name='payment'),
+    path('complete', views.complete, name='complete'),
+    path('paycards', views.paycards, name='paycards'),
+    path('add_card', views.add_card, name='add_card'),
+    path('receipts', views.receipts, name='receipts'),
+    path('receipts/<int:user_id>', views.receipts,
         name='user_receipts'),
-    url(r'^subscription$', views.subscription, name='subscription'),
-    url(r'^subscription/(?P<user_id>[0-9]+)$', views.subscription,
+    path('subscription', views.subscription, name='subscription'),
+    path('subscription/<int:user_id>', views.subscription,
         name='user_subscription'),
-    url(r'^receipt/(?P<id>[0-9]+)$', views.receipt, name='receipt'),
-    url(r'^voiding/(?P<id>[0-9]+)$', views.void, name='void'),
-    url(r'^paypal$', paypal.paypal, name='paypal'),
-    url(r'^paypal_ipn$', paypal.ipn, name='paypal_ipn'),
+    path('receipt/<int:id>', views.receipt, name='receipt'),
+    path('voiding/<int:id>', views.void, name='void'),
+    path('paypal', paypal.paypal, name='paypal'),
+    path('paypal_ipn', paypal.ipn, name='paypal_ipn'),
 ]
