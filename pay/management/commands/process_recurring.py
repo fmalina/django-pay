@@ -1,9 +1,9 @@
 from django.core.management.base import BaseCommand
-from pay.models import Subscription
+from pay.models import Subscription, PayCard, CVV
 from pay.realex import auth_payment
 from pay.views import get_amount
 from pay import app_settings
-from datetime import datetime, timedelta
+from datetime import datetime, date, timedelta
 import time
 
 
@@ -44,12 +44,25 @@ def charge(s):
             print('Failure', p.cardreceipt.details)
 
 
+def cleanup():
+    # delete expired cards
+    PayCard.objects.filter(expire_year__lt=date.today().year).delete()
+    PayCard.objects.filter(expire_year=date.today().year,
+                           expire_month__lt=date.today().month).delete()
+
+    # delete unnecessary CVV details
+    CVV.objects.exclude(paycard__user__subscription__recurring=True).delete()
+
+
 class Command(BaseCommand):
     """ Daily batch processing recurring charges.
     """
     def handle(self, *args, **kwargs):
         now = datetime.now()
         tomorrow = now + timedelta(hours=24)
+
         print('Processing recurring charges:', now)
         for s in Subscription.objects.filter(expires__range=(now, tomorrow), recurring=True):
             charge(s)
+
+        cleanup()
