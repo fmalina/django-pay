@@ -59,6 +59,8 @@ PAY_RECEIPT_EMAIL = getattr(settings,
 PAY_STORE_CVV = getattr(settings,
     'PAY_STORE_CVV', False)
     # Set to True for non PCI compliant Hotel style integration
+PAY_REQUIRE_AUTORENEW_CONSENT = getattr(settings,
+    'REQUIRE_AUTORENEW_CONSENT', True)
 
 PAY_PLANS = getattr(settings,
     'PAY_PLANS', {

@@ -75,6 +75,8 @@ class PayCardForm(forms.Form):
     expire_month = forms.ChoiceField(choices=pay_models.MONTH_CHOICES, label='Expires on', required=False)
     expire_year = forms.ChoiceField(choices=pay_models.YEAR_CHOICES, required=False)
     last_card = forms.BooleanField(initial=False, widget=forms.HiddenInput, required=False)
+    recurring = forms.BooleanField(initial=False, required=False,
+                                   label='Please auto-renew my subscription before it runs out')
     cvv = forms.CharField(max_length=4, label='Security code (CVV)', required=False)
 
     def clean_holder(self):

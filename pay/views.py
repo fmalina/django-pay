@@ -94,7 +94,11 @@ def use_card(request):
         else:
             card = last_card
         cvv = d['cvv']
-        
+
+        if d['recurring']:
+            user.subscription.recurring = True
+            user.subscription.save()
+
         plan = user.subscription.plan
         amount = get_amount(plan)
         p, review_needed = auth_payment(card, amount, cvv=cvv)
@@ -120,7 +124,8 @@ def use_card(request):
         'plan_price': plan_price,
         'ssl': 'https://',
         'cc': cc,
-        'amex_enabled': app_settings.PAY_REALEX_AMEX_ENABLED
+        'amex_enabled': app_settings.PAY_REALEX_AMEX_ENABLED,
+        'require_autorenew_consent': app_settings.PAY_REQUIRE_AUTORENEW_CONSENT
     })
 
 

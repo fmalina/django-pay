@@ -95,6 +95,9 @@ $(function(){
                     {{ cc.postcode.errors }}
                     </li>
             </ul>
+            {% if require_autorenew_consent %}
+                <p class="recurring">{{ cc.recurring }} {{ cc.recurring.label_tag }}</p>
+            {% endif %}
             {% csrf_token %}
             <p><button class="btn btn-success btn-lg center-block">Continue</button></p>
         </div>
