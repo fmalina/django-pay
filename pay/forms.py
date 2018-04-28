@@ -74,7 +74,7 @@ class PayCardForm(forms.Form):
     postcode = forms.CharField(max_length=15, label='Billing postcode *', required=False)
     expire_month = forms.ChoiceField(choices=pay_models.MONTH_CHOICES, label='Expires on', required=False)
     expire_year = forms.ChoiceField(choices=pay_models.YEAR_CHOICES, required=False)
-    last_card = forms.BooleanField(initial=False, widget=forms.HiddenInput)
+    last_card = forms.BooleanField(initial=False, widget=forms.HiddenInput, required=False)
     cvv = forms.CharField(max_length=4, label='Security code (CVV)', required=False)
 
     def clean_holder(self):
