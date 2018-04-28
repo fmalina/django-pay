@@ -181,7 +181,7 @@ def _encrypt_code(code):
     padding = ''
     if (len(code) % 8) != 0:
         padding = 'X' * (8 - (len(code) % 8))
-    return base64.b64encode(encryption_object.encrypt(code + padding))
+    return base64.b64encode(encryption_object.encrypt(code + padding)).decode()
 
 
 class Subscription(models.Model):
