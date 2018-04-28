@@ -43,7 +43,7 @@ Add the ``pay`` URLs to your ``urls.py``
 
     urlpatterns = [
         ...
-        url(r'^pay/', include('pay.urls')),
+        path('pay/', include('pay.urls')),
     ]
 
 Create your tables
