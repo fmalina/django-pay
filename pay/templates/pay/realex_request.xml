@@ -4,7 +4,7 @@
   {% if test %}<account>internettest</account>
   {% elif card.card_type == 'AMEX' %}<account>amex</account>{% endif %}
   <orderid>{{ orderid }}</orderid>
-{% if request_type == 'void' %}  <pasref>{{ p.reference }}</pasref>
+{% if request_type == 'void' %}  <pasref>{{ p.cardreceipt.reference }}</pasref>
   <authcode>{{ p.authcode }}</authcode>
 {% else %}
   <amount currency='{{ p.currency }}'>{{ amount }}</amount>
