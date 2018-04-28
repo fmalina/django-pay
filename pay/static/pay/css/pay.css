@@ -38,3 +38,4 @@ textarea#id_address{margin-left:4px;}
 .errorlist{list-style:none;color:#c00;padding-left:125px;}
 .paycards.table tbody td{vertical-align:middle}
 .paycards.table tbody td.card{width:80px}
+.recurring label{display:inline;font-weight:normal;font-size:.9em}
