@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.urls import reverse
 from datetime import datetime, date, timedelta
 from Crypto.Cipher import Blowfish
 from django.conf import settings
@@ -219,9 +220,8 @@ class Payment(models.Model):
     prefetch = ['user', 'user__img', 'user__subscription', 'cardreceipt']
     ordering = ['-time_stamp']
 
-    @models.permalink
     def get_absolute_url(self):
-        return 'receipt', [self.pk]
+        return reverse('receipt', kwargs={'pk': self.pk})
 
     def voidable(self):
         """Payments are voidable if completed by card within the last 24 hours
