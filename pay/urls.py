@@ -14,8 +14,8 @@ urlpatterns = [
     path('subscription', views.subscription, name='subscription'),
     path('subscription/<int:user_id>', views.subscription,
         name='user_subscription'),
-    path('receipt/<int:id>', views.receipt, name='receipt'),
-    path('voiding/<int:id>', views.void, name='void'),
+    path('receipt/<int:pk>', views.receipt, name='receipt'),
+    path('voiding/<int:pk>', views.void, name='void'),
     path('paypal', paypal.paypal, name='paypal'),
     path('paypal_ipn', paypal.ipn, name='paypal_ipn'),
 ]
