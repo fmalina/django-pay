@@ -153,8 +153,8 @@ def void(request, id):
 
 
 @login_required
-def receipt(request, id):
-    p = get_object_or_404(Payment, pk=id)
+def receipt(request, pk):
+    p = get_object_or_404(Payment, pk=pk)
 
     def format_vat(n):
         return "%0.2f" % round(n, 2)
