@@ -10,6 +10,7 @@ def add_expiry(user, days):
     user.subscription.expires = start + timedelta(days=days)
     user.subscription.save()
 
+
 def alert_review(user):
     mail_managers('Payment review required',
                   'Review payment from: %s' % user.username)
@@ -37,6 +38,7 @@ PAY_CURRENCY = getattr(settings, 'PAY_CURRENCY', 'GBP')  #  EUR, USD
 PAY_THROTTLE_TIME = getattr(settings, 'PAY_THROTTLE_TIME', 0)  # 0 minutes
 PAY_SECRET_KEY = getattr(settings, 'PAY_SECRET_KEY', settings.SECRET_KEY)
 
+PAY_REALEX_ENABLED = getattr(settings, 'PAY_REALEX_ENABLED', False)
 PAY_REALEX_MERCHANT_ID = getattr(settings,
     'PAY_REALEX_MERCHANT_ID',
     'businessnamehere')
