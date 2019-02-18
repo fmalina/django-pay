@@ -4,7 +4,7 @@ from pay import paypal
 
 urlpatterns = [
     path('subscribe', views.subscribe, name='subscribe'),
-    path('use_card', views.use_card, name='payment'),
+    path('payment', views.payment, name='payment'),
     path('complete', views.complete, name='complete'),
     path('paycards', views.paycards, name='paycards'),
     path('add_card', views.add_card, name='add_card'),

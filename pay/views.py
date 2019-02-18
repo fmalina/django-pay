@@ -64,7 +64,9 @@ def subscription(request, user_id=None):
 
 
 @login_required
-def use_card(request):
+def payment(request):
+    if not app_settings.PAY_REALEX_ENABLED:
+        return redirect('paypal')
     user = request.user
     last_card = PayCard.objects.filter(user=user).last()
 
