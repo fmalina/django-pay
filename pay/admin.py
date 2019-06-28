@@ -18,9 +18,6 @@ class CardReceiptInline(admin.StackedInline):
 
 
 class PaymentAdmin(admin.ModelAdmin):
-    def get_readonly_fields(self, request, obj=None):
-        return [f.name for f in self.model._meta.fields]
-
     search_fields = ('cardnumber_ending', 'postcode')
     list_display = ('time_stamp', 'user', 'amount', 'complete')
     readonly_fields = ('time_stamp',)
