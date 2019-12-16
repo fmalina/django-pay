@@ -217,7 +217,7 @@ class Payment(models.Model):
     complete = models.BooleanField('Complete', default=False)
     time_stamp = models.DateTimeField(default=datetime.now, editable=False)
 
-    prefetch = ['user', 'user__img', 'user__subscription', 'cardreceipt']
+    prefetch = ['user', 'user__subscription', 'cardreceipt']
     ordering = ['-time_stamp']
 
     def get_absolute_url(self):
