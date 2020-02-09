@@ -28,7 +28,7 @@ def paypal(request):
 
     url = ['%s?' % PAYPAL_URL]
     plan_days = int(plan)
-    # also in ad_tags premium
+    # also in listings_tags plus
     amount = get_amount(plan)
 
     p = Payment(user=request.user, amount=amount, method='pp')
