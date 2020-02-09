@@ -10,7 +10,7 @@ setup(
     platforms=['OS Independent'],
     keywords='realex, paypal, credit card, django, app, subscriptions',
     author='F. Malina',
-    author_email='fmalina@gmail.com',
+    author_email='fmalina@pm.me',
     url="https://github.com/fmalina/django-pay",
     packages=find_packages(),
     include_package_data=True,
