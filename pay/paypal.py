@@ -26,7 +26,7 @@ User = get_user_model()
 def paypal(request):
     plan = request.user.subscription.plan
 
-    url = ['%s?' % PAYPAL_URL]
+    url = [f'{PAYPAL_URL}?']
     plan_days = int(plan)
     # also in listings_tags plus
     amount = get_amount(plan)
@@ -56,7 +56,7 @@ def paypal(request):
     # if months > 1:
     #     params['quantity'] = int(months)
     for k, v in params.items():
-        url.append('%s=%s' % (k, urllib.parse.quote(str(v))))
+        url.append(f'{k}={urllib.parse.quote(str(v))}')
     url = '&'.join(url)
     return redirect(url)
 
@@ -71,7 +71,7 @@ def confirm_ipn_data(data):
     if fo == "VERIFIED":
         logging.info("VERIFIED")
         return True
-    logging.info("Payment verification failed:\n%s" % fo[:20])
+    logging.info(f"Payment verification failed:\n{fo[:20]}")
     return False
 
 
@@ -92,7 +92,7 @@ def ipn(request):
             # sane = False
     if sane:
         status = data.get('payment_status', 'unknown').strip()
-        logging.info("Status: %s" % status)
+        logging.info(f"Status: {status}")
         if status != "Completed":
             logging.info("Ignoring IPN data for non-complete payment.")
             sane = False
@@ -106,8 +106,5 @@ def ipn(request):
         app_settings.PAY_SUCCESS_CALLBACK(u, days)
         p.complete = True
         p.save()
-        logging.info("\n%s purchased plan: %d.\n" % (
-            u.username,
-            days
-        ))
+        logging.info(f"\n{u.username} purchased plan: {days:d}.\n")
     return HttpResponse('ok')

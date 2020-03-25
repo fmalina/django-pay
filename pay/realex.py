@@ -78,7 +78,7 @@ def auth_payment(card, amount, cvv=None, currency=app_settings.PAY_CURRENCY):
 
     adr = numbers_only(card.address)
     pst = numbers_only(card.postcode)
-    avs = "%s|%s" % (pst, adr)
+    avs = f"{pst}|{adr}"
     if avs == '|' or pst == '':
         avs = False
 
