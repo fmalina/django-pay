@@ -151,7 +151,7 @@ def void(request, id):
     p.complete = False
     p.save()
     messages.success(request, response.findtext('message'))
-    return redirect('/details/%s' % p.user.pk)
+    return redirect(f'/details/{p.user.pk}')
 
 
 @login_required
@@ -170,7 +170,7 @@ def receipt(request, pk):
                 'pre_vat': format_vat(pre_vat),
                 'vat': format_vat(vat),
                 'email': app_settings.PAY_RECEIPT_EMAIL,
-                'title': 'Receipt %s' % p.pk
+                'title': f'Receipt {p.pk}'
             })
         else:
             if request.user.is_staff:
@@ -179,7 +179,7 @@ def receipt(request, pk):
                     'ls': ls,
                     'count': ls.count(),
                     'payment': p,
-                    'title': 'Attempts by %s' % p.user
+                    'title': f'Attempts by {p.user}'
                 })
     raise Http404()
 

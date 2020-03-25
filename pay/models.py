@@ -7,7 +7,7 @@ from django.conf import settings
 from pay import app_settings
 import base64
 
-MONTH_CHOICES = [('', 'Month')] + [(m, '%02d' % m) for m in range(1, 12+1)]
+MONTH_CHOICES = [('', 'Month')] + [(m, f'{m:02d}') for m in range(1, 12+1)]
 year = int(date.today().year)
 YEAR_CHOICES = [('', 'Year')] + [(y, y) for y in range(year, year + 10)]
 AVS_RESPONSES = (
@@ -143,7 +143,7 @@ class PayCard(models.Model):
         return 'pay/img/logo_%s.svg' % self.card_type().lower()
 
     def __str__(self):
-        return 'ending in %s' % self.cardnumber_ending
+        return f'ending in {self.cardnumber_ending}'
 
 
 class CVV(models.Model):
@@ -231,7 +231,7 @@ class Payment(models.Model):
             self.time_stamp > datetime.now() - timedelta(days=1)
 
     def __str__(self):
-        return '%s - %s - %s %s' % (self.pk, self.user, self.amount, self.currency)
+        return f'{self.pk} - {self.user} - {self.amount} {self.currency}'
 
 
 class CardReceipt(models.Model):

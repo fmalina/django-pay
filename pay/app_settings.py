@@ -13,7 +13,7 @@ def add_expiry(user, days):
 
 def alert_review(user):
     mail_managers('Payment review required',
-                  'Review payment from: %s' % user.username)
+                  f'Review payment from: {user.username}')
 
 
 PAY_SUCCESS_CALLBACK = getattr(settings, 'PAY_SUCCESS_CALLBACK', add_expiry)
