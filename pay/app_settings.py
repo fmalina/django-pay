@@ -1,6 +1,7 @@
+from datetime import datetime, timedelta
+
 from django.conf import settings
 from django.core.mail import mail_managers
-from datetime import datetime, timedelta
 
 
 def add_expiry(user, days):

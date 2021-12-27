@@ -1,5 +1,6 @@
-from pay.models import Payment, PayCard, CardReceipt, Subscription
 from django.contrib import admin
+
+from pay.models import CardReceipt, PayCard, Payment, Subscription
 
 
 class PayCardAdmin(admin.ModelAdmin):

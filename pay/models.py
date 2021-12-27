@@ -1,11 +1,12 @@
-from django.db import models
-from django.conf import settings
-from django.urls import reverse
-from datetime import datetime, date, timedelta
+import base64
+from datetime import date, datetime, timedelta
+
 from Crypto.Cipher import Blowfish
 from django.conf import settings
+from django.db import models
+from django.urls import reverse
+
 from pay import app_settings
-import base64
 
 MONTH_CHOICES = [('', 'Month')] + [(m, f'{m:02d}') for m in range(1, 12+1)]
 year = int(date.today().year)

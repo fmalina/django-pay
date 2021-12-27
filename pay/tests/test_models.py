@@ -1,7 +1,9 @@
-from django.test import TestCase
-from django.contrib.auth.models import User
-from pay.models import Payment, PayCard
 from decimal import Decimal
+
+from django.contrib.auth.models import User
+from django.test import TestCase
+
+from pay.models import PayCard, Payment
 
 TEST_CARDS = {
  # www.paypalobjects.com/en_US/vhelp/paypalmanager_help/credit_card_numbers.htm

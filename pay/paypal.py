@@ -1,21 +1,20 @@
-from django.contrib.auth.decorators import login_required
+import logging
+import urllib.error
+import urllib.parse
+import urllib.request
+from datetime import datetime
+
 from django.contrib.auth import get_user_model
-from django.urls import reverse
-from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from django.shortcuts import redirect
+from django.urls import reverse
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_exempt
 
 from pay import app_settings
 from pay.models import Payment
 from pay.utils import get_amount
-
-from datetime import datetime
-import urllib.request
-import urllib.parse
-import urllib.error
-import logging
-
 
 PAYPAL_URL = 'https://www.paypal.com/cgi-bin/webscr'
 

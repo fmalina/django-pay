@@ -1,7 +1,9 @@
-from django import forms
-from pay import models as pay_models
-from pay import app_settings
 import re
+
+from django import forms
+
+from pay import app_settings
+from pay import models as pay_models
 
 
 class CCNumberField(forms.CharField):

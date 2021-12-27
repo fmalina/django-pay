@@ -1,6 +1,6 @@
 from django.urls import path
-from pay import views
-from pay import paypal
+
+from pay import paypal, views
 
 urlpatterns = [
     path('subscribe', views.subscribe, name='subscribe'),

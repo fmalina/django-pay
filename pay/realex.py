@@ -1,16 +1,16 @@
-from django.template.loader import render_to_string
-from django.conf import settings
-
-from pay.models import Payment, CardReceipt, PayCard
-from pay import app_settings
-
-from time import strftime
-from lxml import etree
-from hashlib import sha1
-from datetime import datetime, timedelta
-import urllib.request
 import urllib.error
 import urllib.parse
+import urllib.request
+from datetime import datetime, timedelta
+from hashlib import sha1
+from time import strftime
+
+from django.conf import settings
+from django.template.loader import render_to_string
+from lxml import etree
+
+from pay import app_settings
+from pay.models import CardReceipt, PayCard, Payment
 
 POST_URL = 'https://epage.payandshop.com/epage-remote.cgi'
 DT_FORMAT = '%Y%m%d%H%M%S'

@@ -1,5 +1,6 @@
-from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login
+from django.shortcuts import get_object_or_404, redirect, render
+
 from pay.tests.test_models import create_test_user
 
 
