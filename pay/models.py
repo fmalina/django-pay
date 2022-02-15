@@ -165,25 +165,25 @@ class CVV(models.Model):
         return _decrypt_code(self.encrypted)
 
 
+def _enc():
+    """Returns encryption object"""
+    secret_key = bytes(app_settings.PAY_SECRET_KEY, 'utf8')
+    return Blowfish.new(secret_key, Blowfish.MODE_CBC)
+
+
 def _decrypt_code(code):
-    """Decrypt code encrypted by _encrypt_code
-    """
-    secret_key = app_settings.PAY_SECRET_KEY
-    encryption_object = Blowfish.new(secret_key, Blowfish.MODE_CBC)
+    """Decrypt code encrypted by _encrypt_code"""
     # strip padding from decrypted credit card number
-    return encryption_object.decrypt(base64.b64decode(code)).decode().rstrip('X')
+    return _enc().decrypt(base64.b64decode(code)).decode().rstrip('X')
 
 
 def _encrypt_code(code):
-    """Encrypt CC codes or code fragments
-    """
-    secret_key = app_settings.PAY_SECRET_KEY
-    encryption_object = Blowfish.new(secret_key, Blowfish.MODE_CBC)
+    """Encrypt CC codes or code fragments"""
     # block cipher length must be a multiple of 8
     padding = ''
     if (len(code) % 8) != 0:
         padding = 'X' * (8 - (len(code) % 8))
-    return base64.b64encode(encryption_object.encrypt(code + padding)).decode()
+    return base64.b64encode(_enc().encrypt(code + padding)).decode()
 
 
 class Subscription(models.Model):
