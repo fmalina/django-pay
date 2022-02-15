@@ -1,7 +1,7 @@
 import base64
 from datetime import date, datetime, timedelta
 
-from Crypto.Cipher import Blowfish
+from cryptography.fernet import Fernet
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
@@ -31,11 +31,12 @@ CURRENCIES = (
 
 class CardNumber(models.Model):
     """Card number (PAN)
-    Delete, when not needed anymore.
-    """
+    Delete, when not needed anymore."""
+
     paycard = models.OneToOneField('pay.PayCard', primary_key=True,
                                    on_delete=models.CASCADE)
-    encrypted = models.CharField('Encrypted PAN', max_length=40,
+    encrypted = models.CharField(
+        'Encrypted PAN', max_length=40,
         blank=True, editable=False)
 
     def ending(self):
@@ -67,14 +68,17 @@ class PayCard(models.Model):
     """
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              null=True, blank=True, on_delete=models.SET_NULL)
-    cardnumber_ending = models.CharField('Card number (last 4 digits)',
+    cardnumber_ending = models.CharField(
+        'Card number (last 4 digits)',
         max_length=4, blank=True)
     holder = models.CharField('Card holder’s name', max_length=75, blank=True)
     address = models.CharField('Billing address', max_length=150, blank=True)
     postcode = models.CharField('Billing postcode', max_length=15, blank=True)
-    expire_month = models.IntegerField('Expiration month',
+    expire_month = models.IntegerField(
+        'Expiration month',
         choices=MONTH_CHOICES, null=True, blank=True)
-    expire_year = models.IntegerField('Expiration year',
+    expire_year = models.IntegerField(
+        'Expiration year',
         choices=YEAR_CHOICES, null=True, blank=True)
     created_at = models.DateTimeField(default=datetime.now, editable=False)
 
@@ -82,7 +86,7 @@ class PayCard(models.Model):
         """Take as input a valid cc, encrypt it and store the last 4 digits
         in a visible form
         """
-        encrypted = _encrypt_code(cardnumber_clear)
+        encrypted = _encrypt_code(bytes(cardnumber_clear, 'ascii'))
         cardnumber = CardNumber(paycard=self, encrypted=encrypted)
         cardnumber.save()
 
@@ -165,25 +169,16 @@ class CVV(models.Model):
         return _decrypt_code(self.encrypted)
 
 
-def _enc():
-    """Returns encryption object"""
-    secret_key = bytes(app_settings.PAY_SECRET_KEY, 'utf8')
-    return Blowfish.new(secret_key, Blowfish.MODE_CBC)
-
-
 def _decrypt_code(code):
     """Decrypt code encrypted by _encrypt_code"""
-    # strip padding from decrypted credit card number
-    return _enc().decrypt(base64.b64decode(code)).decode().rstrip('X')
+    f = Fernet(app_settings.PAY_SECRET_KEY)
+    return f.decrypt(code).decode('ascii')
 
 
 def _encrypt_code(code):
     """Encrypt CC codes or code fragments"""
-    # block cipher length must be a multiple of 8
-    padding = ''
-    if (len(code) % 8) != 0:
-        padding = 'X' * (8 - (len(code) % 8))
-    return base64.b64encode(_enc().encrypt(code + padding)).decode()
+    f = Fernet(app_settings.PAY_SECRET_KEY)
+    return f.encrypt(code)
 
 
 class Subscription(models.Model):

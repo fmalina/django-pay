@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 from django.conf import settings
 from django.core.mail import mail_managers
-
+from cryptography.fernet import Fernet
 
 def add_expiry(user, days):
     start = datetime.now()
@@ -37,7 +37,11 @@ PAY_FOR_NAME = getattr(settings, 'PAY_FOR_NAME',
 PAY_SITE_URL = getattr(settings, 'PAY_SITE_URL', '')
 PAY_CURRENCY = getattr(settings, 'PAY_CURRENCY', 'GBP')  # EUR, USD
 PAY_THROTTLE_TIME = getattr(settings, 'PAY_THROTTLE_TIME', 0)  # 0 minutes
-PAY_SECRET_KEY = getattr(settings, 'PAY_SECRET_KEY', settings.SECRET_KEY[:56])
+
+TEMP_SECRET_KEY = Fernet.generate_key()
+# generate encryption key to set for storage of card details as above,
+# if not set card details will become unrecoverable when application reboots
+PAY_SECRET_KEY = getattr(settings, 'PAY_SECRET_KEY', TEMP_SECRET_KEY)
 
 PAY_REALEX_ENABLED = getattr(settings, 'PAY_REALEX_ENABLED', False)
 PAY_REALEX_MERCHANT_ID = getattr(settings,

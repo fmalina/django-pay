@@ -6,7 +6,6 @@ import decimal
 import datetime
 
 
-
 User = get_auth_user_model()
 
 
@@ -27,8 +26,7 @@ class BankAccount(models.Model):
         return decimal.Decimal(random.random())
 
     def pay_to_this_account(self, amount):
-        """ Handle BACS payment
-        """
+        """Handle BACS payment"""
         pass
 
     def init_verify_account(self):
