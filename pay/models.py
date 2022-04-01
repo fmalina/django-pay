@@ -1,4 +1,3 @@
-import base64
 from datetime import date, datetime, timedelta
 
 from cryptography.fernet import Fernet
