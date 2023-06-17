@@ -1,4 +1,4 @@
-from datetime import date, datetime, timedelta
+from datetime import datetime, timedelta
 
 from cryptography.fernet import Fernet
 from django.conf import settings
@@ -6,34 +6,15 @@ from django.db import models
 from django.urls import reverse
 
 from pay import app_settings
-
-MONTH_CHOICES = [('', 'Month')] + [(m, f'{m:02d}') for m in range(1, 12+1)]
-year = int(date.today().year)
-YEAR_CHOICES = [('', 'Year')] + [(y, y) for y in range(year, year + 10)]
-AVS_RESPONSES = (
-    ('M', 'Matched'),
-    ('N', 'Not Matched'),
-    ('I', 'Problem with check'),
-    ('U', 'Unable to check'),  # not certified etc
-    ('P', 'Partial Match')
-)
-PAYMENT_METHODS = (
-    ('cc', 'Credit/Debit card'),
-    ('pp', 'PayPal'),
-)
-CURRENCIES = (
-    ('GBP', '£'),
-    ('EUR', '€'),
-    ('USD', '$'),
-)
+from pay import constants
 
 
 class CardNumber(models.Model):
-    """Card number (PAN)
-    Delete, when not needed anymore."""
+    """Card number (PAN) - Delete, when not needed anymore."""
 
-    paycard = models.OneToOneField('pay.PayCard', primary_key=True,
-                                   on_delete=models.CASCADE)
+    paycard = models.OneToOneField(
+        'pay.PayCard', primary_key=True,
+        on_delete=models.CASCADE)
     encrypted = models.CharField(
         'Encrypted PAN', max_length=40,
         blank=True, editable=False)
@@ -45,13 +26,13 @@ class CardNumber(models.Model):
         xxxx = ''
         i = 0
         for x in self.decrypted:
-            i = i + 1
+            i += 1
             if i == 4:
-                str = 'X '
+                s = 'X '
                 i = 0
             else:
-                str = 'X'
-            xxxx = xxxx + str
+                s = 'X'
+            xxxx = xxxx + s
         return xxxx[0:-5] + ' ' + self.ending()
 
     def __str__(self):
@@ -63,10 +44,11 @@ class CardNumber(models.Model):
 
 
 class PayCard(models.Model):
-    """Card details that can be kept indefinitely with payments/transactions.
-    """
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             null=True, blank=True, on_delete=models.SET_NULL)
+    """Card details that can be kept indefinitely with payments/transactions."""
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True, blank=True, on_delete=models.SET_NULL)
     cardnumber_ending = models.CharField(
         'Card number (last 4 digits)',
         max_length=4, blank=True)
@@ -75,16 +57,16 @@ class PayCard(models.Model):
     postcode = models.CharField('Billing postcode', max_length=15, blank=True)
     expire_month = models.IntegerField(
         'Expiration month',
-        choices=MONTH_CHOICES, null=True, blank=True)
+        choices=constants.MONTH_CHOICES, null=True, blank=True)
     expire_year = models.IntegerField(
         'Expiration year',
-        choices=YEAR_CHOICES, null=True, blank=True)
+        choices=constants.YEAR_CHOICES, null=True, blank=True)
     created_at = models.DateTimeField(default=datetime.now, editable=False)
 
     def store_no(self, cardnumber_clear, cvv_clear):
         """Take as input a valid cc, encrypt it and store the last 4 digits
-        in a visible form
-        """
+        in a visible form"""
+
         encrypted = _encrypt_code(bytes(cardnumber_clear, 'ascii'))
         cardnumber = CardNumber(paycard=self, encrypted=encrypted)
         cardnumber.save()
@@ -153,11 +135,13 @@ class PayCard(models.Model):
 class CVV(models.Model):
     """Encrypted CVV for temporary storage. Delete, when not needed anymore.
     Optional Non-PCI compliant integration for room booking deposit protection.
-    PAY_STORE_CVV setting must be set to True to enable.
-    """
-    paycard = models.OneToOneField('pay.PayCard', primary_key=True,
-                                   on_delete=models.CASCADE)
-    encrypted = models.CharField('Encrypted CVV', max_length=40,
+    PAY_STORE_CVV setting must be set to True to enable."""
+
+    paycard = models.OneToOneField(
+        'pay.PayCard', primary_key=True,
+        on_delete=models.CASCADE)
+    encrypted = models.CharField(
+        'Encrypted CVV', max_length=40,
         blank=True, editable=False)
 
     def __str__(self):
@@ -201,14 +185,13 @@ class Subscription(models.Model):
 
 
 class Payment(models.Model):
-    """Payments via credit or debit card and PayPal
-    """
+    """Payments via credit or debit card and PayPal"""
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              blank=True, null=True, on_delete=models.SET_NULL)
     method = models.CharField('Payment Method', blank=True, max_length=2,
-                              choices=PAYMENT_METHODS, default='cc')
+                              choices=app_settings.PAY_PAYMENT_METHODS, default='cc')
     amount = models.DecimalField(max_digits=8, decimal_places=2)
-    currency = models.CharField(max_length=3, choices=CURRENCIES, default='GBP')
+    currency = models.CharField(max_length=3, choices=app_settings.PAY_CURRENCIES, default='GBP')
     complete = models.BooleanField('Complete', default=False)
     time_stamp = models.DateTimeField(default=datetime.now, editable=False)
 
@@ -219,19 +202,21 @@ class Payment(models.Model):
         return reverse('receipt', kwargs={'pk': self.pk})
 
     def voidable(self):
-        """Payments are voidable if completed by card within the last 24 hours
-        """
-        return self.complete and\
-            hasattr(self, 'cardreceipt') and\
-            self.time_stamp > datetime.now() - timedelta(days=1)
+        """Payments are voidable if completed by card within the last 24 hours"""
+
+        return (
+            self.complete
+            and hasattr(self, 'cardreceipt')
+            and self.time_stamp > datetime.now() - timedelta(days=1)
+        )
 
     def __str__(self):
         return f'{self.pk} - {self.user} - {self.amount} {self.currency}'
 
 
 class CardReceipt(models.Model):
-    """Result of a card transaction.
-    """
+    """Result of a card transaction."""
+
     payment = models.OneToOneField('pay.Payment', primary_key=True, on_delete=models.CASCADE)
     paycard = models.ForeignKey('pay.PayCard', blank=True, null=True, on_delete=models.SET_NULL)
     details = models.CharField(blank=True, max_length=255)
@@ -239,10 +224,12 @@ class CardReceipt(models.Model):
     reference = models.CharField(blank=True, max_length=20)
     reason_code = models.CharField(blank=True, max_length=20)
 
-    avs_address = models.CharField('AVS address check', max_length=1,
-        choices=AVS_RESPONSES, blank=True)
-    avs_postcode = models.CharField('AVS postcode check', max_length=1,
-        choices=AVS_RESPONSES, blank=True)
+    avs_address = models.CharField(
+        'AVS address check', max_length=1,
+        choices=constants.AVS_RESPONSES, blank=True)
+    avs_postcode = models.CharField(
+        'AVS postcode check', max_length=1,
+        choices=constants.AVS_RESPONSES, blank=True)
 
     def __str__(self):
         return self.details

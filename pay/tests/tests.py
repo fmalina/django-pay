@@ -1,9 +1,6 @@
-from datetime import datetime, timedelta
-
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
-from pay.models import Subscription
 from pay.realex import auth_payment
 from pay.tests.test_models import create_test_card, create_test_user
 

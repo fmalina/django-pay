@@ -3,6 +3,7 @@ import re
 from django import forms
 
 from pay import app_settings
+from pay import constants
 from pay import models as pay_models
 
 
@@ -12,8 +13,7 @@ class CCNumberField(forms.CharField):
     ERR_MOD10 = 'Card number entered is not valid credit or debit card number'
 
     def validate_mod10(self, n):
-        """Check to make sure that the card passes a luhn mod-10 checksum
-        """
+        """Check to make sure that the card passes a luhn mod-10 checksum"""
         sum = 0
         num_digits = len(n)
         oddeven = num_digits & 1
@@ -27,8 +27,7 @@ class CCNumberField(forms.CharField):
         return ((sum % 10) == 0)
 
     def strip_to_numbers(self, n):
-        """Remove spaces from the number
-        """
+        """Remove spaces from the number"""
         if self.validate_chars(n):
             result = ''
             rx = re.compile('^[0-9]$')
@@ -40,8 +39,7 @@ class CCNumberField(forms.CharField):
             raise Exception('Number has invalid digits')
 
     def validate_chars(self, n):
-        """Check to make sure string only contains valid characters
-        """
+        """Check to make sure string only contains valid characters"""
         return re.compile('^[0-9 ]*$').match(n) is not None
 
     def clean(self, value):
@@ -58,8 +56,8 @@ class CCNumberField(forms.CharField):
 
 
 class SubscribeForm(forms.Form):
-     plan = forms.ChoiceField(choices=app_settings.PAY_PLAN_CHOICES, initial=30,
-                              required=False)
+    plan = forms.ChoiceField(
+        choices=app_settings.PAY_PLAN_CHOICES, initial=30, required=False)
 
 
 class SubscriptionForm(forms.ModelForm):
@@ -71,11 +69,12 @@ class SubscriptionForm(forms.ModelForm):
 class PayCardForm(forms.Form):
     cardnumber = CCNumberField(max_length=19, label='Card number', required=False)
     holder = forms.CharField(max_length=75, label='Cardholder’s name', required=False)
-    address = forms.CharField(max_length=150, label='Billing address *',
+    address = forms.CharField(
+        max_length=150, label='Billing address *',
         widget=forms.Textarea(attrs={'rows': 3, 'cols': 25}), required=False)
     postcode = forms.CharField(max_length=15, label='Billing postcode *', required=False)
-    expire_month = forms.ChoiceField(choices=pay_models.MONTH_CHOICES, label='Expires on', required=False)
-    expire_year = forms.ChoiceField(choices=pay_models.YEAR_CHOICES, required=False)
+    expire_month = forms.ChoiceField(choices=constants.MONTH_CHOICES, label='Expires on', required=False)
+    expire_year = forms.ChoiceField(choices=constants.YEAR_CHOICES, required=False)
     last_card = forms.BooleanField(initial=False, widget=forms.HiddenInput, required=False)
     recurring = forms.BooleanField(initial=False, required=False,
                                    label='Please auto-renew my subscription before it runs out')

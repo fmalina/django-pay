@@ -1,5 +1,4 @@
 from decimal import Decimal
-
 from pay import app_settings
 
 
