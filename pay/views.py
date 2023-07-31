@@ -25,18 +25,20 @@ def get_user(request, user_id):
     return user
 
 
-@login_required
 def subscribe(request):
-    user = request.user
-    s, created = Subscription.objects.get_or_create(user=user)
-    plan = s.plan
-    form = SubscribeForm(request.POST or None, initial={'plan': plan})
-    if form.is_valid():
-        print(form.cleaned_data)
-        plan = form.cleaned_data.get('plan', 0)
-        s.plan = plan
-        s.save()
-        return redirect('payment')
+    form = SubscribeForm(request.POST or None)
+    plan = 0
+    if request.user.is_authenticated:
+        s, created = Subscription.objects.get_or_create(user=request.user)
+        form.initial = {'plan': s.plan}
+        plan = s.plan
+        if form.is_valid():
+            s.plan = form.cleaned_data.get('plan', 0)
+            s.save()
+            return redirect('payment')
+    elif request.POST:
+        url = reverse('account_signup') + '?next=' + reverse('subscribe')
+        return redirect(url)
 
     return render(request, 'pay/plans.html', {
         'title': app_settings.PAY_TITLE,
