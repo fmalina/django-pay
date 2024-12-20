@@ -1,8 +1,5 @@
 # Django-Pay: Payments and Subscriptions Made Easy
 
-[![Build Status](https://travis-ci.org/fmalina/django-pay.svg?branch=main)](https://travis-ci.org/fmalina/django-pay)
-
-
 **Django-Pay** is a reusable Django app for managing subscriptions, payment cards, and transactions. Designed for seamless integration and PCI compliance, it supports Realex, PayPal, and Global Payments gateways.
 
 ## Features
