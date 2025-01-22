@@ -10,6 +10,4 @@ def index(request):
     user = authenticate(username=user.username, password='testpw')
     login(request, user)
 
-    return render(request, 'index.html', {
-        'user': user
-    })
+    return render(request, 'index.html', {'user': user})

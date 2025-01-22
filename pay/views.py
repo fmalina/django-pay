@@ -39,13 +39,13 @@ def subscribe(request):
     elif request.POST:
         url = reverse('account_signup') + '?next=' + reverse('subscribe')
         return redirect(url)
-
-    return render(request, 'pay/plans.html', {
+    context = {
         'title': app_settings.PAY_TITLE,
         'plans': app_settings.PAY_PLAN_CHOICES,
         'plan': plan,
         'form': form
-    })
+    }
+    return render(request, 'pay/plans.html', context)
 
 
 @login_required
@@ -59,10 +59,7 @@ def subscription(request, user_id=None):
     if form.is_valid():
         form.save()
         messages.success(request, 'Subscription successfully updated.')
-    return render(request, 'pay/subscription.html', {
-        'form': form,
-        'subscription': s
-    })
+    return render(request, 'pay/subscription.html', {'form': form, 'subscription': s})
 
 
 @login_required
@@ -120,8 +117,7 @@ def payment(request):
             messages.warning(request, msg)
     plan = app_settings.PAY_PLANS[user.subscription.plan]
     plan_price, plan_name = plan[0], plan[1]
-
-    return render(request, 'pay/payment.html', {
+    context = {
         'title': 'Pay by card',
         'last_card': last_card,
         'plan_name': plan_name,
@@ -130,7 +126,8 @@ def payment(request):
         'cc': cc,
         'amex_enabled': app_settings.PAY_REALEX_AMEX_ENABLED,
         'require_autorenew_consent': app_settings.PAY_REQUIRE_AUTORENEW_CONSENT
-    })
+    }
+    return render(request, 'pay/payment.html', context)
 
 
 @login_required
@@ -167,22 +164,24 @@ def receipt(request, pk):
         if p.complete:
             vat = p.amount / 120 * 20
             pre_vat = p.amount - vat
-            return render(request, 'pay/receipt.html', {
+            context = {
                 'payment': p,
                 'pre_vat': format_vat(pre_vat),
                 'vat': format_vat(vat),
                 'email': app_settings.PAY_RECEIPT_EMAIL,
                 'title': f'Receipt {p.pk}'
-            })
+            }
+            return render(request, 'pay/receipt.html', context)
         else:
             if request.user.is_staff:
                 ls = p.user.payment_set.all()
-                return render(request, 'dashboard/payment-failed.html', {
+                context = {
                     'ls': ls,
                     'count': ls.count(),
                     'payment': p,
                     'title': f'Attempts by {p.user}'
-                })
+                }
+                return render(request, 'dashboard/payment-failed.html', context)
     raise Http404()
 
 
@@ -194,17 +193,13 @@ def receipts(request, user_id=None):
     payments = user.payment_set.filter(complete=True)\
                    .only('id', 'user', 'amount', 'time_stamp')\
                    .order_by('-id')
-    return render(request, 'pay/receipts.html', {
-        'payments': payments
-    })
+    return render(request, 'pay/receipts.html', {'payments': payments})
 
 
 @login_required
 def paycards(request):
     paycards = PayCard.objects.filter(user=request.user)
-    return render(request, 'pay/manage_cards.html', {
-        'paycards': paycards
-    })
+    return render(request, 'pay/manage_cards.html', {'paycards': paycards})
 
 
 @login_required
@@ -226,6 +221,4 @@ def add_card(request):
         pc.store_no(cardnumber, cvv)
         return redirect('paycards')
 
-    return render(request, 'pay/add_card.html', {
-        'form': form
-    })
+    return render(request, 'pay/add_card.html', {'form': form})
